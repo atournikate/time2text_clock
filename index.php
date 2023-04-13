@@ -10,10 +10,9 @@
 <body>
 
 <div class="container">
-    <h1>There will be a clock here</h1>
-    <form action="">
-
-    </form>
+    <?php
+        echo "Kate made this work, good job Kate";
+    ?>
 </div>
 
 </body>
