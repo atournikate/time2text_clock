@@ -1,27 +1,75 @@
 <?php
 error_reporting(E_ERROR);
 
-/**
- *
- */
 class Clock_Object {
+    private $timeArray;
 
-     const CLOCK_TEXT_EN = 'ITLISAKAMPMACQUARTERDCTWENTYFIVEXHALFSTENFTOPASTERUNINEONESIXTHREEFOURFIVETWOEIGHTELEVENSEVENTWELVETENSEOCLOCK';
+    const LANG_DEFAULT     =   'en';
+    const LANG_DE          =   'de';
 
-    /*const CLOCK_TEXT_DE = 'ESKISTAFÜNFZEHNZWANZIGDREIVIERTELVORFUNKNACHHALBAELFÜNFEINSXAMZWEIDREIPMJVIERSECHSNLACHTSIEBENZWÖLFZEHNEUNKUHR';*/
+    const ROW_NUM          =   10;
+    const COL_NUM          =   11;
 
-    public function getTimeArray($lang = 'en') {
-        $blockArray = [];
-        $blockArray['en'] = [
-            'elementArr'    =>  str_split(self::CLOCK_TEXT_EN),
-        ];
+
+    public function __construct(array $timeArray) {
+        $this->timeArray = $timeArray;
+    }
+
+    /**
+     * get words and filler for clock as array
+     * @param $stringSet
+     * @return array
+     */
+    public function getClockFaceArray($lang = self::LANG_DEFAULT) {
+        $stringValue = '';
+        foreach ($this->timeArray as $element) {
+            $stringValue .= $element[0];
+        }
+        $arr = str_split($stringValue);
+        return $arr;
+    }
+
+    /**
+     * build table from clockFaceArray
+     * @return string
+     */
+    public function buildClock() {
+        $arr = $this->getClockFaceArray();
+
+        $table = '<table>';
+        $lang = '';
+        if (!$lang) {
+            $lang   = 'en';
+        }
+        $length = count($arr);
+        $i = 0;
+
+        foreach ($arr as $key => $block) {
+            $id = $key;
+            $element =  $block;
+
+            // if $i is divisible by 11
+            if($i % self::COL_NUM == 0) {
+                $table .= '<tr><td><div class="block ">' . $element . '</div></td>';
+            } else {
+                if ($lang == 'en' && $key == 104) {
+                    $table .= '<td><div class="block ">' . $element . "'" . '</div></td>';
+                } else {
+                    $table .= '<td><div class="block ">' . $element . '</div></td>';
+                }
+
+            }
+            $i++;
+        }
+        $table .= '</tr></table';
+        return $table;
     }
 
     /**
      * get string time formatted
      * @return string
      */
-    public function now() {
+    private function now() {
         $this->setCurrentTimeZone();
         return date("h:i a");
     }
@@ -31,7 +79,7 @@ class Clock_Object {
      * @param string $timezone
      * @return bool
      */
-    function setCurrentTimeZone(string $timezone = "Europe/Zurich") {
+    private function setCurrentTimeZone(string $timezone = "Europe/Zurich") {
         return date_default_timezone_set($timezone);
     }
 
@@ -39,7 +87,7 @@ class Clock_Object {
      * @param $minuteInterval
      * @return string
      */
-    public function roundDown5MinuteInterval($minuteInterval = 5) {
+    private function roundDown5MinuteInterval($minuteInterval = 5) {
         $now = strtotime($this->now());
         return date('i', floor($now / ($minuteInterval * 60)) * ($minuteInterval * 60));
     }
@@ -47,7 +95,7 @@ class Clock_Object {
     /**
      * @return string
      */
-    function get12HourIncrement() {
+    private function get12HourIncrement() {
         $this->setCurrentTime();
         return date("h");
     }
@@ -55,7 +103,7 @@ class Clock_Object {
     /**
      * @return string
      */
-    function get24HoursIncrement() {
+    private function get24HoursIncrement() {
         $this->setCurrentTime();
         return date("H");
     }
@@ -63,7 +111,7 @@ class Clock_Object {
     /**
      * @return string
      */
-    function getMinutes() {
+    private function getMinutes() {
         $this->setCurrentTime();
         return date("i");
     }
@@ -71,7 +119,7 @@ class Clock_Object {
     /**
      * @return string
      */
-    function getDayNight() {
+    private function getDayNight() {
         $this->setCurrentTime();
         return date("a");
     }
@@ -81,54 +129,23 @@ class Clock_Object {
      */
 
     /**
-     * @param $stringSet
-     * @return array
-     */
-    public function getClockFaceArray($stringSet = self::CLOCK_TEXT_EN) {
-        $arr = str_split($stringSet);
-        return $arr;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getFormattedBlocks($arr) {
-        $elements = [];
-        foreach ($arr as $element) {
-            $block = '<div class="block ">';
-            $block .= $element;
-            $block .= '</div>';
-            $element[] = $block;
-        }
-        return $elements;
-    }
-
-    /**
      * @return void
      */
-    public function renderClockFace() {
-        //get blocks and create 10 rows of 11 blocks
-    }
-
-    /**
-     * @return void
-     */
-    public function setBlockActive() {
+    private function setBlockActive() {
         //set block class as active
     }
 
     /**
      * @return void
      */
-    public function isBlockActive() {
+    private function isBlockActive() {
         //bool check if block class is marked as active
     }
 
     /**
      * @return void
      */
-    public function resetBlock() {
+    private function resetBlock() {
         //block is active, remove 'active' from class
     }
 
@@ -136,7 +153,7 @@ class Clock_Object {
      * @param $formattedTime
      * @return void
      */
-    public function getMinutesTime2Text($formattedTime ) {
+    private function getMinutesTime2Text($formattedTime ) {
         //switch case for minutes
     }
 
@@ -144,16 +161,9 @@ class Clock_Object {
      * @param $formattedTime
      * @return void
      */
-    public function getHourTime2Text ($formattedTime) {
+    private function getHourTime2Text ($formattedTime) {
 
     }
 
-    /**
-     * @return void
-     */
-    function startClock() {
-        //print_r($this->roundDown5MinuteInterval());
-        print_r($this->getClockFaceArray());
-    }
 
 }
