@@ -10,6 +10,66 @@ class Clock_Object {
     const ROW_NUM          =   10;
     const COL_NUM          =   11;
 
+    private $timeStringArray = [
+        self::LANG_DEFAULT  => [
+            'hour'          => [
+                'one',
+                'two',
+                'three',
+                'four',
+                'five',
+                'six',
+                'seven',
+                'eight',
+                'nine',
+                'ten',
+                'eleven',
+                'twelve'
+            ],
+            'minutes'       => [
+                "o'clock",
+                'five past',
+                'ten past',
+                'a quarter past',
+                'twenty past',
+                'twenty five past',
+                'half past',
+                'twenty five to',
+                'twenty to',
+                'a quarter to',
+                'ten to',
+                'five to'
+            ]
+        ],
+        self::LANG_DE       => [
+            'hour'          => [
+                'eins',
+                'zwei',
+                'drei',
+                'vier',
+                'fünf',
+                'sechs',
+                'sieben',
+                'acht',
+                'neun',
+                'zehn',
+                'elf',
+                'zwölf'
+            ],
+            'minutes'       => [
+                'uhr',
+                'fünf nach',
+                'zehn nach',
+                'viertel nach',
+                'zwanzig nach',
+                'halb',
+                'zwanzig vor',
+                'viertel vor',
+                'zehn vor',
+                'fünf vor'
+            ]
+        ],
+    ];
 
     public function __construct(array $timeArray) {
         $this->timeArray = $timeArray;
@@ -84,15 +144,6 @@ class Clock_Object {
     }
 
     /**
-     * @param $minuteInterval
-     * @return string
-     */
-    private function roundDown5MinuteInterval($minuteInterval = 5) {
-        $now = strtotime($this->now());
-        return date('i', floor($now / ($minuteInterval * 60)) * ($minuteInterval * 60));
-    }
-
-    /**
      * @return string
      */
     private function get12HourIncrement() {
@@ -122,6 +173,16 @@ class Clock_Object {
     private function getDayNight() {
         $this->setCurrentTime();
         return date("a");
+    }
+
+    private function getHourFromString($string) {
+        preg_match('/(\d*)(?=:)/', $string, $hour);
+        return $hour[0];
+    }
+
+    private function getMinutesFromString($string) {
+        preg_match('/(?<=:)(\d*)/', $string, $minutes );
+        return $minutes[0];
     }
 
     /*
@@ -163,6 +224,53 @@ class Clock_Object {
      */
     private function getHourTime2Text ($formattedTime) {
 
+    }
+
+    private function roundDown5MinuteIntervals($minutes) {
+        $minuteInterval = 5;
+        $minutesFormatted = floor($minutes/$minuteInterval) * $minuteInterval;
+        if ($minutesFormatted < 10) {
+            return '0' . $minutesFormatted;
+        } else {
+            return $minutesFormatted;
+        }
+    }
+
+    private function convertHourTo12HrIncrement($hour) {
+        if (intval($hour) <= 12) {
+            return $hour;
+        } else {
+            return (round(intval($hour) - 12));
+        }
+    }
+
+    private function formatTime() {
+        $arr = $this->timeArray;
+        $formattedArr = [];
+        foreach ($arr as $element) {
+            $hourRaw    =   $this->getHourFromString($element);
+            $minutesRaw =   $this->getMinutesFromString($element);
+            $hour       =   $this->convertHourTo12HrIncrement($hourRaw);
+            $minutes    =   $this->roundDown5MinuteIntervals($minutesRaw);
+            $formattedArr[] = "$hour:$minutes";
+        }
+        return $formattedArr;
+    }
+
+
+
+    public function startClock() {
+        print_r($this->formatTime());
+    }
+
+
+    /**
+     * @param $minuteInterval
+     * @return string
+     */
+    private function defunctRoundDown($minuteInterval = 5) {
+        $now = strtotime($this->now());
+        return date('i', floor($now / ($minuteInterval * 60)) * ($minuteInterval * 60));
     }
 
 
