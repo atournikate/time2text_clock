@@ -10,8 +10,8 @@ class Clock_Object {
     const ROW_NUM          =   10;
     const COL_NUM          =   11;
 
-    private $timeStringArray = [
-        self::LANG_DEFAULT  => [
+    public $timeStringArray = [
+        Clock_Object::LANG_DEFAULT  => [
             'hour'          => [
                 'one',
                 'two',
@@ -41,7 +41,7 @@ class Clock_Object {
                 'five to'
             ]
         ],
-        self::LANG_DE       => [
+        Clock_Object::LANG_DE       => [
             'hour'          => [
                 'eins',
                 'zwei',
@@ -62,7 +62,9 @@ class Clock_Object {
                 'zehn nach',
                 'viertel nach',
                 'zwanzig nach',
+                'zwanzig nach',
                 'halb',
+                'zwanzig vor',
                 'zwanzig vor',
                 'viertel vor',
                 'zehn vor',
@@ -73,6 +75,7 @@ class Clock_Object {
 
     public function __construct(array $timeArray) {
         $this->timeArray = $timeArray;
+
     }
 
     /**
@@ -80,7 +83,7 @@ class Clock_Object {
      * @param $stringSet
      * @return array
      */
-    public function getClockFaceArray($lang = self::LANG_DEFAULT) {
+    public function getClockFaceArray($lang = Clock_Object::LANG_DEFAULT) {
         $stringValue = '';
         foreach ($this->timeArray as $element) {
             $stringValue .= $element[0];
@@ -109,7 +112,7 @@ class Clock_Object {
             $element =  $block;
 
             // if $i is divisible by 11
-            if($i % self::COL_NUM == 0) {
+            if($i % Clock_Object::COL_NUM == 0) {
                 $table .= '<tr><td><div class="block ">' . $element . '</div></td>';
             } else {
                 if ($lang == 'en' && $key == 104) {
@@ -123,40 +126,6 @@ class Clock_Object {
         }
         $table .= '</tr></table';
         return $table;
-    }
-
-    /**
-     * get string time formatted
-     * @return string
-     */
-    private function now() {
-        $this->setCurrentTimeZone();
-        return date("h:i a");
-    }
-
-    /**
-     * set timezone - default Zürich
-     * @param string $timezone
-     * @return bool
-     */
-    private function setCurrentTimeZone(string $timezone = "Europe/Zurich") {
-        return date_default_timezone_set($timezone);
-    }
-
-    /**
-     * @return string
-     */
-    private function get12HourIncrement() {
-        $this->setCurrentTime();
-        return date("h");
-    }
-
-    /**
-     * @return string
-     */
-    private function get24HoursIncrement() {
-        $this->setCurrentTime();
-        return date("H");
     }
 
     /**
@@ -214,14 +183,6 @@ class Clock_Object {
      * @param $formattedTime
      * @return void
      */
-    private function getMinutesTime2Text($formattedTime ) {
-        //switch case for minutes
-    }
-
-    /**
-     * @param $formattedTime
-     * @return void
-     */
     private function getHourTime2Text ($formattedTime) {
 
     }
@@ -252,17 +213,138 @@ class Clock_Object {
             $minutesRaw =   $this->getMinutesFromString($element);
             $hour       =   $this->convertHourTo12HrIncrement($hourRaw);
             $minutes    =   $this->roundDown5MinuteIntervals($minutesRaw);
-            $formattedArr[] = "$hour:$minutes";
+            $formattedArr[] = [$hour, $minutes];
         }
         return $formattedArr;
     }
 
+    /**
+     * @param $formattedTime
+     * @return void
+     */
+    private function getTime2Text($minutes, $hour, $lang = Clock_Object::LANG_DEFAULT) {
+        $timeArrayMinutes   = $this->timeStringArray[$lang]['minutes'];
+        $timeArrayHour      = $this->timeStringArray[$lang]['hour'];
 
+        $hour = $hour - 1;
+        if ( $hour < 0 ) {
+            $hour == 11;
+        }
+        if ( $hour > 11) {
+            $hour == 0;
+        }
 
-    public function startClock() {
-        print_r($this->formatTime());
+        if ($lang == self::LANG_DE) {
+            if ($minutes >= 30) {
+                $hour += 1;
+            }
+        } elseif ($lang == self::LANG_DEFAULT) {
+            if ($minutes > 30) {
+                $hour += 1;
+            }
+        }
+
+        switch ($minutes) {
+            case 0:
+                $ret = $timeArrayHour[$hour] . " " . $timeArrayMinutes[0];
+                return  $ret;
+                break;
+            case 5:
+                $ret = $timeArrayMinutes[1] . " " . $timeArrayHour[$hour];
+                return $ret;
+                break;
+            case 10:
+                $ret = $timeArrayMinutes[2] . " " . $timeArrayHour[$hour];
+                return $ret;
+                break;
+            case 15:
+                $ret = $timeArrayMinutes[3] . " " . $timeArrayHour[$hour];
+                return $ret;
+                break;
+            case 20:
+                $ret = $timeArrayMinutes[4] . " " . $timeArrayHour[$hour];
+                return $ret;
+                break;
+            case 25:
+                $ret = $timeArrayMinutes[5] . " " . $timeArrayHour[$hour];
+                return $ret;
+                break;
+            case 30:
+                if ($lang == self::LANG_DE) {
+                    $ret = $timeArrayMinutes[6] . " " . $timeArrayHour[$hour];
+                } else {
+                    $ret = $timeArrayMinutes[6] . " " . $timeArrayHour[$hour];
+                }
+                return $ret;
+                break;
+            case 35:
+                if ($lang == self::LANG_DE) {
+                    $ret = $timeArrayMinutes[7] . " " . $timeArrayHour[$hour];
+                } else {
+                    $ret = $timeArrayMinutes[7] . " " . $timeArrayHour[$hour];
+                }
+                return $ret;
+                break;
+            case 40:
+                if ($lang == self::LANG_DE) {
+                    $ret = $timeArrayMinutes[8] . " " . $timeArrayHour[$hour];
+                } else {
+                    $ret = $timeArrayMinutes[8] . " " . $timeArrayHour[$hour];
+                }
+                return $ret;
+                break;
+            case 45:
+                if ($lang == self::LANG_DE) {
+                    $ret = $timeArrayMinutes[9] . " " . $timeArrayHour[$hour];
+                } else {
+                    $ret = $timeArrayMinutes[9] . " " . $timeArrayHour[$hour];
+                }
+                return $ret;
+                break;
+            case 50:
+                if ($lang == self::LANG_DE) {
+                    $ret = $timeArrayMinutes[10] . " " . $timeArrayHour[$hour];
+                } else {
+                    $ret = $timeArrayMinutes[10] . " " . $timeArrayHour[$hour];
+                }
+                return $ret;
+                break;
+            case 55:
+                if ($lang == self::LANG_DE) {
+                    $ret = $timeArrayMinutes[11] . " " . $timeArrayHour[$hour];
+                } else {
+                    $ret = $timeArrayMinutes[11] . " " . $timeArrayHour[$hour];
+                }
+                return $ret;
+                break;
+            default:
+                return "Kate did something wrong here";
+                break;
+        }
     }
 
+
+
+    public function startClock($lang = self::LANG_DEFAULT) {
+        //print_r($this->formatTime());
+        $formattedArr = $this->formatTime();
+        $num = count($formattedArr);
+        for ($i = 0; $i < $num; $i++) {
+            $hour       = $formattedArr[$i][0];
+            $minutes    = $formattedArr[$i][1];
+            $text = $this->getTime2Text($minutes, $hour, $lang);
+
+            print_r(strtoupper($lang) . " - " . $hour . " - " . $minutes . " - " . " $text \n");
+
+        }
+
+
+        
+    }
+
+    /**
+     * May no longer be needed
+     */
 
     /**
      * @param $minuteInterval
@@ -271,6 +353,40 @@ class Clock_Object {
     private function defunctRoundDown($minuteInterval = 5) {
         $now = strtotime($this->now());
         return date('i', floor($now / ($minuteInterval * 60)) * ($minuteInterval * 60));
+    }
+
+    /**
+     * get string time formatted
+     * @return string
+     */
+    private function now() {
+        $this->setCurrentTimeZone();
+        return date("h:i a");
+    }
+
+    /**
+     * set timezone - default Zürich
+     * @param string $timezone
+     * @return bool
+     */
+    private function setCurrentTimeZone( $timezone = "Europe/Zurich") {
+        return date_default_timezone_set($timezone);
+    }
+
+    /**
+     * @return string
+     */
+    private function get12HourIncrement() {
+        $this->setCurrentTime();
+        return date("h");
+    }
+
+    /**
+     * @return string
+     */
+    private function get24HoursIncrement() {
+        $this->setCurrentTime();
+        return date("H");
     }
 
 
