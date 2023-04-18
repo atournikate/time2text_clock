@@ -77,8 +77,157 @@ class Clock_Object extends DateTime {
         ],
     ];
 
-    public function __construct(array $timeArray) {
-        $this->timeArray = $timeArray;
+    public $elementArray = [
+        Clock_Object::LANG_DEFAULT => [
+                [
+                    'IT',
+                    'class'     => 'always'
+                ],
+                [
+                    'L',
+                    'class'     => ''
+                ],
+                [
+                    'IS',
+                    'class'     => 'always'
+                ],
+                [
+                    'AK',
+                    'class'     => ''
+                ],
+                [
+                    'AM',
+                    'class'     => 'meridian'
+                ],
+                [
+                    'PM',
+                    'class'     => 'meridian'
+                ],
+                [
+                    'A',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'C',
+                    'class'     => ''
+                ],
+                [
+                    'QUARTER',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'DC',
+                    'class'     => ''
+                ],
+                [
+                    'TWENTY',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'FIVE',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'X',
+                    'class'     => ''
+                ],
+                [
+                    'HALF',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'S',
+                    'class'     => ''
+                ],
+                [
+                    'TEN',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'F',
+                    'class'     => ''
+                ],
+                [
+                    'TO',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'PAST',
+                    'class'     => 'minutes'
+                ],
+                [
+                    'ERU',
+                    'class'     => ''
+                ],
+                [
+                    'NINE',
+                    'class'     => 'hour'
+                ],
+                [
+                    'ONE',
+                    'class'     => 'hour'
+                ],
+                [
+                    'SIX',
+                    'class'     => 'hour'
+                ],
+                [
+                    'THREE',
+                    'class'     => 'hour'
+                ],
+                [
+                    'FOUR',
+                    'class'     => 'hour'
+                ],
+                [
+                    'FIVE',
+                    'class'     => 'hour'
+                ],
+                [
+                    'TWO',
+                    'class'     => 'hour'
+                ],
+                [
+                    'EIGHT',
+                    'class'     => 'hour'
+                ],
+                [
+                    'ELEVEN',
+                    'class'     => 'hour'
+                ],
+                [
+                    'SEVEN',
+                    'class'     => 'hour'
+                ],
+                [
+                    'TWELVE',
+                    'class'     => 'hour'
+                ],
+                [
+                    'TEN',
+                    'class'     => 'hour'
+                ],
+                [
+                    'SE',
+                    'class'     => ''
+                ],
+                [
+                    'O',
+                    'class'     => 'hour'
+                ],
+                [
+                    'CLOCK',
+                    'class'     => 'hour'
+                ],
+
+        ],
+    ];
+
+    public function __construct(array $timeArray, array $elementArray = null) {
+        $this->timeArray        = $timeArray;
+        if ($elementArray) {
+            $this->elementArray = $elementArray;
+        }
     }
 
     /**
@@ -268,7 +417,12 @@ class Clock_Object extends DateTime {
         $textHour           =   $timeStringArray['hour'];
         $textMinutes        =   $timeStringArray['minutes'];
         $textPre            =   $timeStringArray['pre'];
-        $textSuffix         =   $timeStringArray['suffix'];
+
+        if ($minutes != 00) {
+            $textSuffix     =   '';
+        } else {
+            $textSuffix     =   $timeStringArray['suffix'];
+        }
 
         return $textPre . " " . $textMinutes[$minuteIndex] . " " . $textHour[$hourIndex] . " " . $textSuffix . " " . $meridian;
     }
@@ -287,67 +441,90 @@ class Clock_Object extends DateTime {
             $meridian   = $formattedArr[$i][2];
             $text = $this->getTime2Text($minutes, $hour, $meridian, $lang);
 
-            print_r(strtoupper($lang) . "   " . $hour . "   " . $minutes . "   " . " $text \n");
+            print_r(strtoupper($lang) . " " . $hour . ":" . $minutes . " - " . "$text" . PHP_EOL );
         }
     }
-
-
 
     /**
      * ELEMENTS - FUNCTIONS
      */
+
     private function setBlockActive() {
-        //set block class as active
+        if (!$this->isBlockActive()) {
+            echo 'active';
+        } else {
+            echo '';
+        }
     }
     private function isBlockActive() {
-        //bool check if block class is marked as active
+
+    }
+
+    private function checkTime2Text($time = null) {
+        if (!$time) {
+            $time = $this->now();
+        }
+
     }
     private function resetBlock() {
         //block is active, remove 'active' from class
     }
+
     /**
      * get words and filler for clock as array
      * @param $stringSet
      * @return array
      */
     public function getClockFaceArray($lang = Clock_Object::LANG_DEFAULT) {
-        $stringValue = '';
-        foreach ($this->timeArray as $element) {
+        $stringValue    = '';
+        $classArr       = [];
+        foreach ($this->elementArray[$lang] as $element) {
+            $length     = strlen($element[0]);
+            for ($j = 0; $j < $length; $j++) {
+                $classArr[] = $element['class'];
+            }
             $stringValue .= $element[0];
         }
-        $arr = str_split($stringValue);
-        return $arr;
+        $letterArr = str_split($stringValue);
+        $num = count($letterArr);
+        $newArr = [];
+        for ($i = 0; $i < $num; $i++) {
+            $newArr[] = [$letterArr[$i], $classArr[$i]];
+        }
+        return $newArr;
+    }
+
+    private function getClockText() {
+
     }
 
     /**
      * build table from clockFaceArray
      * @return string
      */
-    public function buildClock() {
-        $arr = $this->getClockFaceArray();
+    public function buildClock($lang = Clock_Object::LANG_DEFAULT) {
+        $arr = $this->getClockFaceArray($lang);
 
         $table = '<table>';
-        $lang = '';
-        if (!$lang) {
-            $lang   = 'en';
-        }
+
+
         $length = count($arr);
         $i = 0;
 
         foreach ($arr as $key => $block) {
-            $id = $key;
-            $element =  $block;
+            $id         =   $key;
+            $element    =   $block[0];
+            $class      =   $block[1];
 
             // if $i is divisible by 11
             if($i % Clock_Object::COL_NUM == 0) {
-                $table .= '<tr><td><div class="block ">' . $element . '</div></td>';
+                $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
             } else {
                 if ($lang == 'en' && $key == 104) {
-                    $table .= '<td><div class="block ">' . $element . "'" . '</div></td>';
+                    $table .= '<td><div class="block ' . $class . '">' . $element . "'" . '</div></td>';
                 } else {
-                    $table .= '<td><div class="block ">' . $element . '</div></td>';
+                    $table .= '<td><div class="block ' . $class . '">' . $element . '</div></td>';
                 }
-
             }
             $i++;
         }

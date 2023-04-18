@@ -1,44 +1,21 @@
 <?php
 include_once 'Clock_Object.php';
-
-$timeElementArray = [
-    ['IT'],
-    ['L'],
-    ['IS'],
-    ['AK'],
-    ['AM'],
-    ['PM'],
-    ['A'],
-    ['C'],
-    ['QUARTER'],
-    ['DC'],
-    ['TWENTY'],
-    ['FIVE'],
-    ['X'],
-    ['HALF'],
-    ['S'],
-    ['TEN'],
-    ['F'],
-    ['TO'],
-    ['PAST'],
-    ['ERU'],
-    ['NINE'],
-    ['ONE'],
-    ['SIX'],
-    ['THREE'],
-    ['FOUR'],
-    ['FIVE'],
-    ['TWO'],
-    ['EIGHT'],
-    ['ELEVEN'],
-    ['SEVEN'],
-    ['TWELVE'],
-    ['TEN'],
-    ['SE'],
-    ['O'],
-    ['CLOCK']
+$testTimes = [
+    '',
+    '11:03',
+    '23:08',
+    '11:12',
+    '23:16',
+    '11:21',
+    '23:28',
+    '11:32',
+    '23:36',
+    '11:40',
+    '23:47',
+    '11:54',
+    '23:59',
 ];
-$clock = new Clock_Object($timeElementArray);
+$clock = new Clock_Object($testTimes);
 
 ?>
 <!doctype html>
