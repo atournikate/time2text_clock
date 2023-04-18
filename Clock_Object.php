@@ -89,12 +89,12 @@ class Clock_Object extends DateTime {
      * @param string $timezone
      * @return bool
      */
-    private function setCurrentTimeZone( $timezone = "Europe/Zurich") {
+    private function setCurrentTimeZone(string $timezone = "Europe/Zurich") {
         return date_default_timezone_set($timezone);
     }
 
     /**
-     * get string time formatted
+     * get string time - 24-Hour format
      * @return string
      */
     private function now() {
@@ -102,21 +102,32 @@ class Clock_Object extends DateTime {
         return date("H:i");
     }
 
-    private function getHourFromString($string) {
-        preg_match('/(\d*)(?=:)/', $string, $hour);
+    /**
+     * get the hour (int) from "H:i"
+     * @param string $time
+     * @return mixed
+     */
+    private function getHourFromString(string $time) {
+        preg_match('/(\d*)(?=:)/', $time, $hour);
         return $hour[0];
     }
 
-    private function getMinutesFromString($string) {
-        preg_match('/(?<=:)(\d*)/', $string, $minutes );
+    /**
+     * get minutes (int) from "H:i"
+     * @param string $time
+     * @return mixed
+     */
+    private function getMinutesFromString(string $time) {
+        preg_match('/(?<=:)(\d*)/', $time, $minutes );
         return $minutes[0];
     }
 
     /**
-     * @param $formattedTime
-     * @return void
+     * get the 12-hour increment (int) from time entered (or current time)
+     * @param string|null $time
+     * @return float
      */
-    private function getHourTime2Text ($time = null) {
+     private function get12HourIncrement (string $time = null) {
         if (!$time) {
             $time    =   $this->now();
         }
@@ -125,7 +136,12 @@ class Clock_Object extends DateTime {
         return $ret;
     }
 
-    private function getMinutesTime2Text ($time = null) {
+    /**
+     * get the minutes rounded down to 5-min intervals (int) from time entered (or current time)
+     * @param string|null $time
+     * @return float|int|string
+     */
+    private function get5MinuteInterval (string $time = null) {
         if (!$time) {
             $time        = $this->now();
         }
@@ -134,7 +150,13 @@ class Clock_Object extends DateTime {
         return $ret;
     }
 
-    private function roundDown5MinuteIntervals($minutes) {
+    /**
+     * mathematically round the minutes down to nearest 5-min interval
+     * this will always round down - the clock will never run fast, but may appear to run slow...
+     * @param int $minutes
+     * @return float|int|string
+     */
+    private function roundDown5MinuteIntervals(int $minutes) {
         $minuteInterval = 5;
         $minutesFormatted = floor($minutes/$minuteInterval) * $minuteInterval;
         if ($minutesFormatted < 10) {
@@ -144,15 +166,25 @@ class Clock_Object extends DateTime {
         }
     }
 
-    private function convertHourTo12HrIncrement($hour) {
-        if (intval($hour) <= 12) {
+    /**
+     * get 12-hour increment from 24-hour increment
+     * @param int $hour
+     * @return float|int
+     */
+    private function convertHourTo12HrIncrement(int $hour) {
+        if ($hour <= 12) {
             return $hour;
         } else {
-            return (round(intval($hour) - 12));
+            return (round($hour - 12));
         }
     }
 
-    private function getMeridian($time = null) {
+    /**
+     * get AM/PM from time entered (or current time)
+     * @param string|null $time
+     * @return string
+     */
+    private function getMeridian(string $time = null) {
         if (!$time) {
             $time    =   $this->now();
         }
@@ -165,18 +197,29 @@ class Clock_Object extends DateTime {
         return $meridian;
     }
 
+    /**
+     * format time array
+     * @return array
+     */
     private function formatTime() {
         $arr = $this->timeArray;
         $formattedArr = [];
         foreach ($arr as $element) {
-            $hour       =   $this->getHourTime2Text($element);
-            $minutes    =   $this->getMinutesTime2Text($element);
+            $hour       =   $this->get12HourIncrement($element);
+            $minutes    =   $this->get5MinuteInterval($element);
             $meridian   =   $this->getMeridian($element);
             $formattedArr[] = [$hour, $minutes, $meridian];
         }
         return $formattedArr;
     }
 
+    /**
+     * get the hour index based on hour and language
+     * @param $hour
+     * @param $minutes
+     * @param $lang
+     * @return int
+     */
     private function getHourIndex($hour, $minutes, $lang) {
         $index = $hour - 1;
 
@@ -199,12 +242,22 @@ class Clock_Object extends DateTime {
         return $index;
     }
 
+    /**
+     * get minute index based on minutes entered
+     * note: minutes must have already been converted to a 5-minute increment
+     * @param $minutes
+     * @return float|int
+     */
     private function getMinuteIndex($minutes) {
         return $minutes / 5;
     }
 
     /**
-     * @param $formattedTime
+     * get the text from time elements based on language
+     * @param $minutes
+     * @param $hour
+     * @param $meridian
+     * @param string $lang
      * @return void
      */
     private function getTime2Text($minutes, $hour, $meridian, $lang = Clock_Object::LANG_DEFAULT) {
@@ -217,17 +270,15 @@ class Clock_Object extends DateTime {
         $textPre            =   $timeStringArray['pre'];
         $textSuffix         =   $timeStringArray['suffix'];
 
-        switch ($minutes) {
-            case 0:
-                return  $textPre . " " . $textHour[$hourIndex] . " " . $textMinutes[$minuteIndex] . " " . $textSuffix . " " . $meridian;
-                break;
-            default:
-                return $textPre . " " . $textMinutes[$minuteIndex] . " " . $textHour[$hourIndex] . " " . $textSuffix . " " . $meridian;
-                break;
-        }
+        return $textPre . " " . $textMinutes[$minuteIndex] . " " . $textHour[$hourIndex] . " " . $textSuffix . " " . $meridian;
     }
 
-    public function startClock($lang = self::LANG_DEFAULT) {
+    /**
+     * print out formatted results of times in timeArray
+     * @param string $lang
+     * @return void
+     */
+    public function startClock(string $lang = self::LANG_DEFAULT) {
         $formattedArr = $this->formatTime();
         $num = count($formattedArr);
         for ($i = 0; $i < $num; $i++) {
@@ -236,7 +287,7 @@ class Clock_Object extends DateTime {
             $meridian   = $formattedArr[$i][2];
             $text = $this->getTime2Text($minutes, $hour, $meridian, $lang);
 
-            print_r(strtoupper($lang) . " - " . $hour . " - " . $minutes . " - " . " $text \n");
+            print_r(strtoupper($lang) . "   " . $hour . "   " . $minutes . "   " . " $text \n");
         }
     }
 
