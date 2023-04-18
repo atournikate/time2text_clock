@@ -5,6 +5,7 @@ class runClock {
     function run() {
 
         $testTimes = [
+            '',
             '11:03',
             '23:08',
             '11:12',

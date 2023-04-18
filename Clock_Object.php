@@ -12,6 +12,7 @@ class Clock_Object extends DateTime {
 
     public $timeStringArray = [
         Clock_Object::LANG_DEFAULT  => [
+            'pre'           => 'it is',
             'hour'          => [
                 'one',
                 'two',
@@ -27,7 +28,7 @@ class Clock_Object extends DateTime {
                 'twelve'
             ],
             'minutes'       => [
-                "o clock",
+                '',
                 'five past',
                 'ten past',
                 'a quarter past',
@@ -39,9 +40,11 @@ class Clock_Object extends DateTime {
                 'a quarter to',
                 'ten to',
                 'five to'
-            ]
+            ],
+            'suffix'        => 'o clock'
         ],
         Clock_Object::LANG_DE       => [
+            'pre'           => 'es ist',
             'hour'          => [
                 'eins',
                 'zwei',
@@ -57,7 +60,7 @@ class Clock_Object extends DateTime {
                 'zwölf'
             ],
             'minutes'       => [
-                'uhr',
+                '',
                 'fünf nach',
                 'zehn nach',
                 'viertel nach',
@@ -69,13 +72,25 @@ class Clock_Object extends DateTime {
                 'viertel vor',
                 'zehn vor',
                 'fünf vor'
-            ]
+            ],
+            'suffix'        => 'uhr'
         ],
     ];
 
     public function __construct(array $timeArray) {
         $this->timeArray = $timeArray;
+    }
 
+    /**
+     * TIME TO TEXT FUNCTIONALITY
+     */
+    /**
+     * set timezone - default Zürich
+     * @param string $timezone
+     * @return bool
+     */
+    private function setCurrentTimeZone( $timezone = "Europe/Zurich") {
+        return date_default_timezone_set($timezone);
     }
 
     /**
@@ -87,97 +102,6 @@ class Clock_Object extends DateTime {
         return date("H:i");
     }
 
-    /**
-     * set timezone - default Zürich
-     * @param string $timezone
-     * @return bool
-     */
-    private function setCurrentTimeZone( $timezone = "Europe/Zurich") {
-        return date_default_timezone_set($timezone);
-    }
-
-    /**
-     * @return string
-     */
-    private function get12HourIncrement() {
-        $this->setCurrentTimeZone();
-        return date("h");
-    }
-
-    /**
-     * @return string
-     */
-    private function get24HoursIncrement() {
-        $this->setCurrentTimeZone();
-        return date("H");
-    }
-
-    /**
-     * get words and filler for clock as array
-     * @param $stringSet
-     * @return array
-     */
-    public function getClockFaceArray($lang = Clock_Object::LANG_DEFAULT) {
-        $stringValue = '';
-        foreach ($this->timeArray as $element) {
-            $stringValue .= $element[0];
-        }
-        $arr = str_split($stringValue);
-        return $arr;
-    }
-
-    /**
-     * build table from clockFaceArray
-     * @return string
-     */
-    public function buildClock() {
-        $arr = $this->getClockFaceArray();
-
-        $table = '<table>';
-        $lang = '';
-        if (!$lang) {
-            $lang   = 'en';
-        }
-        $length = count($arr);
-        $i = 0;
-
-        foreach ($arr as $key => $block) {
-            $id = $key;
-            $element =  $block;
-
-            // if $i is divisible by 11
-            if($i % Clock_Object::COL_NUM == 0) {
-                $table .= '<tr><td><div class="block ">' . $element . '</div></td>';
-            } else {
-                if ($lang == 'en' && $key == 104) {
-                    $table .= '<td><div class="block ">' . $element . "'" . '</div></td>';
-                } else {
-                    $table .= '<td><div class="block ">' . $element . '</div></td>';
-                }
-
-            }
-            $i++;
-        }
-        $table .= '</tr></table';
-        return $table;
-    }
-
-    /**
-     * @return string
-     */
-    private function getMinutes() {
-        $this->setCurrentTime();
-        return date("i");
-    }
-
-    /**
-     * @return string
-     */
-    private function getDayNight() {
-        $this->setCurrentTime();
-        return date("a");
-    }
-
     private function getHourFromString($string) {
         preg_match('/(\d*)(?=:)/', $string, $hour);
         return $hour[0];
@@ -186,31 +110,6 @@ class Clock_Object extends DateTime {
     private function getMinutesFromString($string) {
         preg_match('/(?<=:)(\d*)/', $string, $minutes );
         return $minutes[0];
-    }
-
-    /*
-     * ELEMENTS - FUNCTIONS
-     */
-
-    /**
-     * @return void
-     */
-    private function setBlockActive() {
-        //set block class as active
-    }
-
-    /**
-     * @return void
-     */
-    private function isBlockActive() {
-        //bool check if block class is marked as active
-    }
-
-    /**
-     * @return void
-     */
-    private function resetBlock() {
-        //block is active, remove 'active' from class
     }
 
     /**
@@ -304,7 +203,6 @@ class Clock_Object extends DateTime {
         return $minutes / 5;
     }
 
-
     /**
      * @param $formattedTime
      * @return void
@@ -316,16 +214,15 @@ class Clock_Object extends DateTime {
 
         $textHour           =   $timeStringArray['hour'];
         $textMinutes        =   $timeStringArray['minutes'];
+        $textPre            =   $timeStringArray['pre'];
+        $textSuffix         =   $timeStringArray['suffix'];
 
         switch ($minutes) {
             case 0:
-                $ret = $textHour[$hourIndex] . " " . $textMinutes[$minuteIndex] . " " . $meridian;
-                return  $ret;
+                return  $textPre . " " . $textHour[$hourIndex] . " " . $textMinutes[$minuteIndex] . " " . $textSuffix . " " . $meridian;
                 break;
-
             default:
-                $ret = $textMinutes[$minuteIndex] . " " . $textHour[$hourIndex] . " " . $meridian;
-                return $ret;
+                return $textPre . " " . $textMinutes[$minuteIndex] . " " . $textHour[$hourIndex] . " " . $textSuffix . " " . $meridian;
                 break;
         }
     }
@@ -340,25 +237,71 @@ class Clock_Object extends DateTime {
             $text = $this->getTime2Text($minutes, $hour, $meridian, $lang);
 
             print_r(strtoupper($lang) . " - " . $hour . " - " . $minutes . " - " . " $text \n");
-
         }
     }
 
 
-    /**
-     * May no longer be needed
-     */
 
     /**
-     * @param $minuteInterval
-     * @return string
+     * ELEMENTS - FUNCTIONS
      */
-    private function defunctRoundDown($minuteInterval = 5) {
-        $now = strtotime($this->now());
-        return date('i', floor($now / ($minuteInterval * 60)) * ($minuteInterval * 60));
+    private function setBlockActive() {
+        //set block class as active
+    }
+    private function isBlockActive() {
+        //bool check if block class is marked as active
+    }
+    private function resetBlock() {
+        //block is active, remove 'active' from class
+    }
+    /**
+     * get words and filler for clock as array
+     * @param $stringSet
+     * @return array
+     */
+    public function getClockFaceArray($lang = Clock_Object::LANG_DEFAULT) {
+        $stringValue = '';
+        foreach ($this->timeArray as $element) {
+            $stringValue .= $element[0];
+        }
+        $arr = str_split($stringValue);
+        return $arr;
     }
 
+    /**
+     * build table from clockFaceArray
+     * @return string
+     */
+    public function buildClock() {
+        $arr = $this->getClockFaceArray();
 
+        $table = '<table>';
+        $lang = '';
+        if (!$lang) {
+            $lang   = 'en';
+        }
+        $length = count($arr);
+        $i = 0;
 
+        foreach ($arr as $key => $block) {
+            $id = $key;
+            $element =  $block;
+
+            // if $i is divisible by 11
+            if($i % Clock_Object::COL_NUM == 0) {
+                $table .= '<tr><td><div class="block ">' . $element . '</div></td>';
+            } else {
+                if ($lang == 'en' && $key == 104) {
+                    $table .= '<td><div class="block ">' . $element . "'" . '</div></td>';
+                } else {
+                    $table .= '<td><div class="block ">' . $element . '</div></td>';
+                }
+
+            }
+            $i++;
+        }
+        $table .= '</tr></table';
+        return $table;
+    }
 
 }
