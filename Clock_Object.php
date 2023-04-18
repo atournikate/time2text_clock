@@ -219,11 +219,19 @@ class Clock_Object extends DateTime {
      */
     private function getHourTime2Text ($time = null) {
         if (!$time) {
-            $now    =   $this->now();
-            $hour   =   strval($now);
+            $time    =   $this->now();
         }
-        $raw = $this->getHourFromString($hour);
-        $ret = $this->convertHourTo12HrIncrement($raw);
+        $hour = $this->getHourFromString($time);
+        $ret = $this->convertHourTo12HrIncrement($hour);
+        return $ret;
+    }
+
+    private function getMinutesTime2Text ($time = null) {
+        if (!$time) {
+            $time        = $this->now();
+        }
+        $minutes = $this->getMinutesFromString($time);
+        $ret = $this->roundDown5MinuteIntervals($minutes);
         return $ret;
     }
 
@@ -245,8 +253,12 @@ class Clock_Object extends DateTime {
         }
     }
 
-    private function getMeridian($hoursRaw) {
-        if ($hoursRaw < 12) {
+    private function getMeridian($time = null) {
+        if (!$time) {
+            $time    =   $this->now();
+        }
+        $hour = $this->getHourFromString($time);
+        if ($hour < 12) {
             $meridian = 'am';
         } else {
             $meridian = 'pm';
@@ -258,124 +270,67 @@ class Clock_Object extends DateTime {
         $arr = $this->timeArray;
         $formattedArr = [];
         foreach ($arr as $element) {
-            $hourRaw    =   $this->getHourFromString($element);
-            $minutesRaw =   $this->getMinutesFromString($element);
-            $meridian   =   $this->getMeridian($hourRaw);
             $hour       =   $this->getHourTime2Text($element);
-            $minutes    =   $this->roundDown5MinuteIntervals($minutesRaw);
+            $minutes    =   $this->getMinutesTime2Text($element);
+            $meridian   =   $this->getMeridian($element);
             $formattedArr[] = [$hour, $minutes, $meridian];
         }
         return $formattedArr;
     }
+
+    private function getHourIndex($hour, $minutes, $lang) {
+        $index = $hour - 1;
+
+        if ($lang == self::LANG_DE) {
+            if ($minutes >= 30) {
+                $index += 1;
+            }
+        } elseif ($lang == self::LANG_DEFAULT) {
+            if ($minutes > 30) {
+                $index += 1;
+            }
+        }
+
+        if ( $index < 0 ) {
+            $index == 11;
+        }
+        if ( $index > 11) {
+            $index == 0;
+        }
+        return $index;
+    }
+
+    private function getMinuteIndex($minutes) {
+        return $minutes / 5;
+    }
+
 
     /**
      * @param $formattedTime
      * @return void
      */
     private function getTime2Text($minutes, $hour, $meridian, $lang = Clock_Object::LANG_DEFAULT) {
-        $timeArrayMinutes   = $this->timeStringArray[$lang]['minutes'];
-        $timeArrayHour      = $this->timeStringArray[$lang]['hour'];
+        $timeStringArray    =   $this->timeStringArray[$lang];
+        $hourIndex          =   $this->getHourIndex($hour, $minutes, $lang);
+        $minuteIndex        =   $this->getMinuteIndex($minutes);
 
-        $hour = $hour - 1;
-        if ( $hour < 0 ) {
-            $hour == 11;
-        }
-        if ( $hour > 11) {
-            $hour == 0;
-        }
-
-        if ($lang == self::LANG_DE) {
-            if ($minutes >= 30) {
-                $hour += 1;
-            }
-        } elseif ($lang == self::LANG_DEFAULT) {
-            if ($minutes > 30) {
-                $hour += 1;
-            }
-        }
+        $textHour           =   $timeStringArray['hour'];
+        $textMinutes        =   $timeStringArray['minutes'];
 
         switch ($minutes) {
             case 0:
-                $ret = $timeArrayHour[$hour] . " " . $timeArrayMinutes[0] . " " . $meridian;
+                $ret = $textHour[$hourIndex] . " " . $textMinutes[$minuteIndex] . " " . $meridian;
                 return  $ret;
                 break;
-            case 5:
-                $ret = $timeArrayMinutes[1] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                return $ret;
-                break;
-            case 10:
-                $ret = $timeArrayMinutes[2] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                return $ret;
-                break;
-            case 15:
-                $ret = $timeArrayMinutes[3] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                return $ret;
-                break;
-            case 20:
-                $ret = $timeArrayMinutes[4] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                return $ret;
-                break;
-            case 25:
-                $ret = $timeArrayMinutes[5] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                return $ret;
-                break;
-            case 30:
-                if ($lang == self::LANG_DE) {
-                    $ret = $timeArrayMinutes[6] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                } else {
-                    $ret = $timeArrayMinutes[6] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                }
-                return $ret;
-                break;
-            case 35:
-                if ($lang == self::LANG_DE) {
-                    $ret = $timeArrayMinutes[7] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                } else {
-                    $ret = $timeArrayMinutes[7] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                }
-                return $ret;
-                break;
-            case 40:
-                if ($lang == self::LANG_DE) {
-                    $ret = $timeArrayMinutes[8] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                } else {
-                    $ret = $timeArrayMinutes[8] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                }
-                return $ret;
-                break;
-            case 45:
-                if ($lang == self::LANG_DE) {
-                    $ret = $timeArrayMinutes[9] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                } else {
-                    $ret = $timeArrayMinutes[9] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                }
-                return $ret;
-                break;
-            case 50:
-                if ($lang == self::LANG_DE) {
-                    $ret = $timeArrayMinutes[10] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                } else {
-                    $ret = $timeArrayMinutes[10] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                }
-                return $ret;
-                break;
-            case 55:
-                if ($lang == self::LANG_DE) {
-                    $ret = $timeArrayMinutes[11] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                } else {
-                    $ret = $timeArrayMinutes[11] . " " . $timeArrayHour[$hour] . " " . $meridian;
-                }
-                return $ret;
-                break;
+
             default:
-                return "Kate did something wrong here";
+                $ret = $textMinutes[$minuteIndex] . " " . $textHour[$hourIndex] . " " . $meridian;
+                return $ret;
                 break;
         }
     }
 
     public function startClock($lang = self::LANG_DEFAULT) {
-        $this->getHourTime2Text();
-        //print_r($this->formatTime());
         $formattedArr = $this->formatTime();
         $num = count($formattedArr);
         for ($i = 0; $i < $num; $i++) {
