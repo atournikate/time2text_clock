@@ -1,233 +1,38 @@
 <?php
+include_once 'lang.json';
 error_reporting(E_ERROR);
 
-class Clock_Object extends DateTime {
-    private $timeArray;
 
-    const LANG_DEFAULT     =   'en';
-    const LANG_DE          =   'de';
+class Clock_Object {
+    private $timeArray;
+    private $lang;
+    /**
+     * CONSTANTS
+     */
+
+    //LANGUAGE
+    const LANG_DEFAULT      =   'en';
+    const LANG_DE           =   'de';
+    const LANG_TR           =   'tr';
+    const LANG_JP           =   'jp';
 
     const ROW_NUM          =   10;
     const COL_NUM          =   11;
 
-    public $timeStringArray = [
-        Clock_Object::LANG_DEFAULT  => [
-            'pre'           => 'it is',
-            'hour'          => [
-                'one',
-                'two',
-                'three',
-                'four',
-                'five',
-                'six',
-                'seven',
-                'eight',
-                'nine',
-                'ten',
-                'eleven',
-                'twelve'
-            ],
-            'minutes'       => [
-                '',
-                'five past',
-                'ten past',
-                'a quarter past',
-                'twenty past',
-                'twenty five past',
-                'half past',
-                'twenty five to',
-                'twenty to',
-                'a quarter to',
-                'ten to',
-                'five to'
-            ],
-            'suffix'        => 'o clock'
-        ],
-        Clock_Object::LANG_DE       => [
-            'pre'           => 'es ist',
-            'hour'          => [
-                'eins',
-                'zwei',
-                'drei',
-                'vier',
-                'fünf',
-                'sechs',
-                'sieben',
-                'acht',
-                'neun',
-                'zehn',
-                'elf',
-                'zwölf'
-            ],
-            'minutes'       => [
-                '',
-                'fünf nach',
-                'zehn nach',
-                'viertel nach',
-                'zwanzig nach',
-                'zwanzig nach',
-                'halb',
-                'zwanzig vor',
-                'zwanzig vor',
-                'viertel vor',
-                'zehn vor',
-                'fünf vor'
-            ],
-            'suffix'        => 'uhr'
-        ],
-    ];
 
-    public $elementArray = [
-        Clock_Object::LANG_DEFAULT => [
-                [
-                    'IT',
-                    'class'     => 'always'
-                ],
-                [
-                    'L',
-                    'class'     => ''
-                ],
-                [
-                    'IS',
-                    'class'     => 'always'
-                ],
-                [
-                    'AK',
-                    'class'     => ''
-                ],
-                [
-                    'AM',
-                    'class'     => 'meridian'
-                ],
-                [
-                    'PM',
-                    'class'     => 'meridian'
-                ],
-                [
-                    'A',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'C',
-                    'class'     => ''
-                ],
-                [
-                    'QUARTER',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'DC',
-                    'class'     => ''
-                ],
-                [
-                    'TWENTY',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'FIVE',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'X',
-                    'class'     => ''
-                ],
-                [
-                    'HALF',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'S',
-                    'class'     => ''
-                ],
-                [
-                    'TEN',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'F',
-                    'class'     => ''
-                ],
-                [
-                    'TO',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'PAST',
-                    'class'     => 'minutes'
-                ],
-                [
-                    'ERU',
-                    'class'     => ''
-                ],
-                [
-                    'NINE',
-                    'class'     => 'hour'
-                ],
-                [
-                    'ONE',
-                    'class'     => 'hour'
-                ],
-                [
-                    'SIX',
-                    'class'     => 'hour'
-                ],
-                [
-                    'THREE',
-                    'class'     => 'hour'
-                ],
-                [
-                    'FOUR',
-                    'class'     => 'hour'
-                ],
-                [
-                    'FIVE',
-                    'class'     => 'hour'
-                ],
-                [
-                    'TWO',
-                    'class'     => 'hour'
-                ],
-                [
-                    'EIGHT',
-                    'class'     => 'hour'
-                ],
-                [
-                    'ELEVEN',
-                    'class'     => 'hour'
-                ],
-                [
-                    'SEVEN',
-                    'class'     => 'hour'
-                ],
-                [
-                    'TWELVE',
-                    'class'     => 'hour'
-                ],
-                [
-                    'TEN',
-                    'class'     => 'hour'
-                ],
-                [
-                    'SE',
-                    'class'     => ''
-                ],
-                [
-                    'O',
-                    'class'     => 'hour'
-                ],
-                [
-                    'CLOCK',
-                    'class'     => 'hour'
-                ],
-
-        ],
-    ];
-
-    public function __construct(array $timeArray, array $elementArray = null) {
-        $this->timeArray        = $timeArray;
-        if ($elementArray) {
-            $this->elementArray = $elementArray;
+    public function __construct(string $langSelected = self::LANG_DEFAULT, string|array $time = null) {
+        if (!$time) {
+            $this->time = date("H:i");
+        } else {
+            $this->time = $time;
         }
+        $this->lang = $langSelected;
+    }
+
+    public function getJSON2PHP($lang = null) {
+        $json = file_get_contents('lang.json');
+        $ret = json_decode($json, true);
+        print_r($ret);
     }
 
     /**
@@ -248,7 +53,7 @@ class Clock_Object extends DateTime {
      */
     private function now() {
         $this->setCurrentTimeZone();
-        return date("H:i");
+        return $this->time;
     }
 
     /**

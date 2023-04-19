@@ -1,0 +1,155 @@
+{
+  "en":  {
+      "time": {
+        "FULL":         "it is {HOUR} o clock",
+        "MINUTES_PAST": "it is {MINUTES} past {HOUR}",
+        "HALF_PAST":    "it is half past {HOUR}",
+        "QUARTER_PAST": "it is a quarter past {HOUR}",
+        "QUARTER_TO":   "it is a quarter to {HOUR}",
+        "MINUTES_TO":   "it is {MINUTES} to {HOUR}"
+      },
+      "numbers": {
+        "1":  "one",
+        "2":  "two",
+        "3":  "three",
+        "4":  "four",
+        "5":  "five",
+        "6":  "six",
+        "7":  "seven",
+        "8":  "eight",
+        "9":  "nine",
+        "10": "ten",
+        "11": "eleven",
+        "12": "twelve",
+        "20": "twenty",
+        "25": "twentyfive"
+      },
+      "clockRows": {
+        "1":  "ITLISAKAMPM",
+        "2":  "ACQUARTERDC",
+        "3":  "TWENTYFIVEX",
+        "4":  "HALFSTENFTO",
+        "5":  "PASTERUNINE",
+        "6":  "ONESIXTHREE",
+        "7":  "FOURFIVETWO",
+        "8":  "EIGHTELEVEN",
+        "9":  "SEVENTWELVE",
+        "10":  "TENSEOCLOCK"
+      }
+  },
+  "de": {
+    "time": {
+      "FULL":         "es ist {HOUR} uhr",
+      "MINUTES_PAST": "es ist {MINUTES} nach {HOUR}",
+      "FIVE_TO_HALF": "es ist fünf vor halb {HOUR}",
+      "HALF_PAST":    "es ist halb {HOUR}",
+      "FIVE_PAST_HALF": "es ist fünf nach halb {HOUR}",
+      "QUARTER_PAST": "es ist viertel nach {HOUR}",
+      "QUARTER_TO":   "es ist viertel vor {HOUR}",
+      "MINUTES_TO":   "es ist {MINUTES} vor {HOUR}"
+    },
+    "numbers": {
+      "1":  "eins",
+      "2":  "zwei",
+      "3":  "drei",
+      "4":  "vier",
+      "5":  "fünf",
+      "6":  "sechs",
+      "7":  "sieben",
+      "8":  "acht",
+      "9":  "neun",
+      "10": "zen",
+      "11": "elf",
+      "12": "zwolf",
+      "20": "zwanzig"
+    },
+    "clockRows": {
+      "1":  "ESKISTAFÜNF",
+      "2":  "ZEHNZWANZIG",
+      "3":  "DREIVIERTEL",
+      "4":  "VORLSNKNACH",
+      "5":  "HALBAELFÜNF",
+      "6":  "EINSXAMZWEI",
+      "7":  "DREIPMJVIER",
+      "8":  "SECHSNLACHT",
+      "9":  "SIEBENZWÖLF",
+      "10":  "ZEHNEUNKUHR"
+    }
+  },
+  "tr": {
+    "time": {
+      "FULL":          "saat {HOURS}",
+      "MINUTES_PAST":  "saat {HOURS} {MINUTES} geçiyor",
+      "HALF_PAST":     "saat {HOURS} buçukit",
+      "QUARTER_PAST":  "saat {HOURS} çeyrek geçiyor",
+      "QUARTER_TO":    "saat {HOURS} çeyrek var",
+      "MINUTES_TO":    "saat {HOURS} {MINUTES} var"
+    },
+    "numbers": {
+      "1":  "bir",
+      "2":  "iki",
+      "3":  "üç",
+      "4":  "dört",
+      "5":  "beş",
+      "6":  "altı",
+      "7":  "yedi",
+      "8":  "sekiz",
+      "9":  "dokuz",
+      "10": "on",
+      "11": "on bir",
+      "12": "on iki",
+      "20": "yirmi",
+      "25": "yirmi beş"
+    },
+    "clockRows": {
+      "1":  "SAATXSABAHD",
+      "2":  "AKŞAMNONJKL",
+      "3":  "BIRUIKIYÜÇI",
+      "4":  "DÖRTABEŞDIG",
+      "5":  "ALTIVYEDIEF",
+      "6":  "SEKIZHDOKUZ",
+      "7":  "YIRMIPBEŞUD",
+      "8":  "ZONYÇEYREKS",
+      "9":  "VARMGBUÇUKL",
+      "10":  "GEÇIYORCTBO"
+    }
+  },
+  "jp": {
+    "time": {
+      "FULL":          "今は{HOURS}時です",
+      "MINUTES_PAST":  "今は{HOURS}時{MINUTES}分です",
+      "HALF_PAST":     "今は{HOURS}時半です",
+      "QUARTER_PAST":  "今は{HOURS}時{MINUTES}分です",
+      "QUARTER_TO":    "今は{HOURS}時{MINUTES}分です",
+      "MINUTES_TO":    "今は{HOURS}時{MINUTES}分です"
+    },
+    "numbers": {
+      "1":  "一",
+      "2":  "二",
+      "3":  "三",
+      "4":  "四",
+      "5":  "五",
+      "6":  "六",
+      "7":  "七",
+      "8":  "八",
+      "9":  "九",
+      "10": "十",
+      "11": "十一",
+      "12": "十二",
+      "20": "二十",
+      "25": "二十五"
+    },
+    "clockRows": {
+      "1":  "今(✿◠‿◠)は0_O",
+      "2":  "十一二三四五六七八九時",
+      "3":  "一二三四五(☆ω☆)十",
+      "4":  "一二三四五六七八九☉分",
+      "5":  "(ノಠ益ಠ)ノ彡┻━┻",
+      "6":  "/ᐠ｡ꞈ｡ᐟ＼|ω・）",
+      "7":  "✿¯＼_(シ)_/¯✿",
+      "8":  ",(๑ᴖᴈᴖ)ᴖᴑᴖ๑)",
+      "9":  "朝˚夜✩┐(ﾟ～ﾟ)┌",
+      "10":  "d(-_^)ㅇㅅㅇです"
+    }
+  }
+}

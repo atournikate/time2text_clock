@@ -19,9 +19,9 @@ class runClock {
             '11:54',
             '23:59',
         ];
-        $clock = new Clock_Object($testTimes);
-        $clock->startClock();
-        $clock->startClock(Clock_Object::LANG_DE);
+        $clock = new Clock_Object(Clock_Object::LANG_DEFAULT, $testTimes);
+        $clock->getJSON2PHP();
+
     }
 }
 
