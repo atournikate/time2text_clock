@@ -1,6 +1,6 @@
 {
   "en":  {
-      "time": {
+      "text": {
         "FULL":         "it is {HOUR} o clock",
         "MINUTES_PAST": "it is {MINUTES} past {HOUR}",
         "HALF_PAST":    "it is half past {HOUR}",
@@ -38,7 +38,7 @@
       }
   },
   "de": {
-    "time": {
+    "text": {
       "FULL":         "es ist {HOUR} uhr",
       "MINUTES_PAST": "es ist {MINUTES} nach {HOUR}",
       "FIVE_TO_HALF": "es ist fünf vor halb {HOUR}",
@@ -77,7 +77,7 @@
     }
   },
   "tr": {
-    "time": {
+    "text": {
       "FULL":          "saat {HOURS}",
       "MINUTES_PAST":  "saat {HOURS} {MINUTES} geçiyor",
       "HALF_PAST":     "saat {HOURS} buçukit",
@@ -115,7 +115,7 @@
     }
   },
   "jp": {
-    "time": {
+    "text": {
       "FULL":          "今は{HOURS}時です",
       "MINUTES_PAST":  "今は{HOURS}時{MINUTES}分です",
       "HALF_PAST":     "今は{HOURS}時半です",

@@ -1,43 +1,64 @@
 <?php
-include_once 'lang.json';
 error_reporting(E_ERROR);
 
-
 class Clock_Object {
-    private $timeArray;
-    private $lang;
     /**
      * CONSTANTS
      */
 
     //LANGUAGE
+    const ROOT              = '/Users/kebensteiner/Sites/wall-clock/';
+
     const LANG_DEFAULT      =   'en';
     const LANG_DE           =   'de';
     const LANG_TR           =   'tr';
     const LANG_JP           =   'jp';
 
-    const ROW_NUM          =   10;
-    const COL_NUM          =   11;
+    const ROW_NUM           =   10;
+    const COL_NUM           =   11;
 
-
-    public function __construct(string $langSelected = self::LANG_DEFAULT, string|array $time = null) {
+    public function __construct( string|array $time = null, string $langSelected = self::LANG_DEFAULT) {
         if (!$time) {
-            $this->time = date("H:i");
+            $this->time = $this->now();
         } else {
             $this->time = $time;
         }
         $this->lang = $langSelected;
+        $this->time2text  = $this->getJSON2PHP();
     }
 
-    public function getJSON2PHP($lang = null) {
-        $json = file_get_contents('lang.json');
-        $ret = json_decode($json, true);
-        print_r($ret);
+    /**
+     * convert json data to array, return array of selected language
+     * @return mixed
+     */
+    private function getJSON2PHP() {
+        $lang       = $this->lang;
+        $filePath   = self::ROOT . 'lang.json';
+        $file       = file_get_contents($filePath);
+        $ret        = json_decode($file, true);
+        return $ret[$lang];
+    }
+
+    /**
+     * test CLI Clock
+     * @param string $lang
+     * @return void
+     */
+    public function startClock() {
+        $time = $this->getFormattedTime();
+        /*print_r($time);*/
+        $num = count($time);
+        for ($i = 0; $i < $num; $i++) {
+            $this->getTime2Text($time[$i]);
+        }
+
+        exit;
     }
 
     /**
      * TIME TO TEXT FUNCTIONALITY
      */
+
     /**
      * set timezone - default Zürich
      * @param string $timezone
@@ -53,7 +74,7 @@ class Clock_Object {
      */
     private function now() {
         $this->setCurrentTimeZone();
-        return $this->time;
+        return date("H:i");
     }
 
     /**
@@ -152,58 +173,48 @@ class Clock_Object {
     }
 
     /**
+     * format time string
+     * @param $time
+     * @return array
+     */
+    private function formatTimeString($time) {
+         $arr        =   [
+            //'24hour'    => $this->getHourFromString($time),
+            'hour'      => $this->get12HourIncrement($time),
+            'minutes'   => $this->get5MinuteInterval($time),
+            'meridian'  =>  $this->getMeridian($time)
+        ];
+        return $arr;
+    }
+
+    /**
      * format time array
      * @return array
      */
-    private function formatTime() {
-        $arr = $this->timeArray;
+    private function formatTimeArray($time) {
         $formattedArr = [];
-        foreach ($arr as $element) {
-            $hour       =   $this->get12HourIncrement($element);
-            $minutes    =   $this->get5MinuteInterval($element);
-            $meridian   =   $this->getMeridian($element);
-            $formattedArr[] = [$hour, $minutes, $meridian];
+        foreach ($time as $element) {
+            if (empty($element)) {
+                $element = $this->now();
+            }
+            $formatted      = $this->formatTimeString($element);
+            $formattedArr[] = $formatted;
         }
         return $formattedArr;
     }
 
     /**
-     * get the hour index based on hour and language
-     * @param $hour
-     * @param $minutes
-     * @param $lang
-     * @return int
+     * get time as formatted array
+     * @return array
      */
-    private function getHourIndex($hour, $minutes, $lang) {
-        $index = $hour - 1;
-
-        if ($lang == self::LANG_DE) {
-            if ($minutes >= 30) {
-                $index += 1;
-            }
-        } elseif ($lang == self::LANG_DEFAULT) {
-            if ($minutes > 30) {
-                $index += 1;
-            }
+    private function getFormattedTime() {
+        $time = $this->time;
+        if (is_string($time)) {
+            $formattedTime  = $this->formatTimeString($time);
+        } else {
+            $formattedTime  = $this->formatTimeArray($time);
         }
-
-        if ( $index < 0 ) {
-            $index == 11;
-        }
-        if ( $index > 11) {
-            $index == 0;
-        }
-        return $index;
-    }
-
-    /**
-     * get minute index based on minutes entered
-     * note: minutes must have already been converted to a 5-minute increment
-     * @param $minutes
-     * @return float|int
-     */
-    private function getMinuteIndex($minutes) {
-        return $minutes / 5;
+        return $formattedTime;
     }
 
     /**
@@ -214,41 +225,71 @@ class Clock_Object {
      * @param string $lang
      * @return void
      */
-    private function getTime2Text($minutes, $hour, $meridian, $lang = Clock_Object::LANG_DEFAULT) {
-        $timeStringArray    =   $this->timeStringArray[$lang];
-        $hourIndex          =   $this->getHourIndex($hour, $minutes, $lang);
-        $minuteIndex        =   $this->getMinuteIndex($minutes);
+    private function getTime2Text($time) {
+        //get elements from time
+        $hour       = $time['hour'];
+        $minutes    = $time['minutes'];
+        $meridian   = strtoupper($time['meridian']);
 
-        $textHour           =   $timeStringArray['hour'];
-        $textMinutes        =   $timeStringArray['minutes'];
-        $textPre            =   $timeStringArray['pre'];
+        // get json data
+        $data       = $this->time2text;
+        // get time strings and numbers
+        $text       = $data['text'];
+        $numbers    = $data['numbers'];
 
-        if ($minutes != 00) {
-            $textSuffix     =   '';
+        if ($minutes < 30) {
+            $suff = "PAST";
         } else {
-            $textSuffix     =   $timeStringArray['suffix'];
+            $suff = "TO";
         }
 
-        return $textPre . " " . $textMinutes[$minuteIndex] . " " . $textHour[$hourIndex] . " " . $textSuffix . " " . $meridian;
-    }
-
-    /**
-     * print out formatted results of times in timeArray
-     * @param string $lang
-     * @return void
-     */
-    public function startClock(string $lang = self::LANG_DEFAULT) {
-        $formattedArr = $this->formatTime();
-        $num = count($formattedArr);
-        for ($i = 0; $i < $num; $i++) {
-            $hour       = $formattedArr[$i][0];
-            $minutes    = $formattedArr[$i][1];
-            $meridian   = $formattedArr[$i][2];
-            $text = $this->getTime2Text($minutes, $hour, $meridian, $lang);
-
-            print_r(strtoupper($lang) . " " . $hour . ":" . $minutes . " - " . "$text" . PHP_EOL );
+        switch ($minutes) {
+            case 00:
+                $string = $text['FULL'];
+                break;
+            case 15:
+                $string = $text['QUARTER_PAST'];
+                break;
+            case 30:
+                $string = $text['HALF_PAST'];
+                break;
+            case 45:
+                $string = $text['QUARTER_TO'];
+                break;
+            default:
+                $string = $text['MINUTES_' . $suff];
+                break;
         }
+
+        // adjust time after the half hour
+        if ($this->lang == self::LANG_DEFAULT) {
+            if ($minutes > 30) {
+                $hour   += 1;
+                $minutes = 60 - $minutes;
+            }
+        }
+
+
+        $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutes)], $string) . " " . $meridian;
+
+        print_r ( $time['hour'] . ":" . $time['minutes'] . ": " . $ret . PHP_EOL);
+
     }
+
+    private function getTimeString($hour, $minutes, $string) {
+        $text = str_replace('{HOUR}', $hour, $string);
+        $ret  = str_replace('{MINUTES}', $minutes, $text);
+        return strtoupper($ret);
+    }
+/*
+    private function time2TextHour($hourText, $sentence) {
+        return preg_replace( '{HOUR}', $hourText, $sentence);
+    }
+
+    private function time2TextMinutes($minuteText, $sentence) {
+        return preg_replace('{MINUTES}', $minuteText, $sentence);
+    }*/
+
 
     /**
      * ELEMENTS - FUNCTIONS

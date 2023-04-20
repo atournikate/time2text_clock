@@ -255,3 +255,43 @@
 
         ],
     ];*/
+
+
+/**
+ * get the hour index based on hour and language
+ * @param $hour
+ * @param $minutes
+ * @param $lang
+ * @return int
+ */
+/*private function getHourIndex($hour, $minutes, $lang) {
+    $index = $hour - 1;
+
+    if ($lang == self::LANG_DE) {
+        if ($minutes >= 30) {
+            $index += 1;
+        }
+    } elseif ($lang == self::LANG_DEFAULT) {
+        if ($minutes > 30) {
+            $index += 1;
+        }
+    }
+
+    if ( $index < 0 ) {
+        $index == 11;
+    }
+    if ( $index > 11) {
+        $index == 0;
+    }
+    return $index;
+}*/
+
+/**
+ * get minute index based on minutes entered
+ * note: minutes must have already been converted to a 5-minute increment
+ * @param $minutes
+ * @return float|int
+ */
+/*private function getMinuteIndex($minutes) {
+    return $minutes / 5;
+}*/
