@@ -17,7 +17,7 @@ class Clock_Object {
     const ROW_NUM           =   10;
     const COL_NUM           =   11;
 
-    public function __construct( string|array $time = null, string $langSelected = self::LANG_DEFAULT) {
+    public function __construct( $time = null, string $langSelected = self::LANG_DEFAULT) {
         if (!$time) {
             $this->time = $this->now();
         } else {
@@ -46,13 +46,18 @@ class Clock_Object {
      */
     public function startClock() {
         $time = $this->getFormattedTime();
-        /*print_r($time);*/
-        $num = count($time);
-        for ($i = 0; $i < $num; $i++) {
-            $this->getTime2Text($time[$i]);
-        }
 
-        exit;
+        $count = count($time);
+        if ($count > 3) {
+            $ret = [];
+            $num = count($time);
+            for ($i = 0; $i < $num; $i++) {
+               $ret[] = $this->getTime2Text($time[$i]);
+            }
+        } else {
+            $ret = $this->getTime2Text($time);
+        }
+        return $ret;
     }
 
     /**
@@ -226,6 +231,7 @@ class Clock_Object {
      * @return void
      */
     private function getTime2Text($time) {
+
         //get elements from time
         $hour       = $time['hour'];
         $minutes    = $time['minutes'];
@@ -233,6 +239,7 @@ class Clock_Object {
 
         // get json data
         $data       = $this->time2text;
+
         // get time strings and numbers
         $text       = $data['text'];
         $numbers    = $data['numbers'];
@@ -243,136 +250,125 @@ class Clock_Object {
             $suff = "TO";
         }
 
-        switch ($minutes) {
-            case 00:
-                $string = $text['FULL'];
-                break;
-            case 15:
-                $string = $text['QUARTER_PAST'];
-                break;
-            case 30:
-                $string = $text['HALF_PAST'];
-                break;
-            case 45:
-                $string = $text['QUARTER_TO'];
-                break;
-            default:
-                $string = $text['MINUTES_' . $suff];
-                break;
-        }
+        $string = $this->getStringSwitchCase($minutes, $text, $suff);
 
         // adjust time after the half hour
-        if ($this->lang == self::LANG_DEFAULT) {
+        if ($this->lang == self::LANG_DE) {
+            if ($minutes >= 30) {
+                $hour   += 1;
+                $minutes = 60 - $minutes;
+            }
+        } elseif ($this->lang == self::LANG_DEFAULT || $this->lang == self::LANG_TR) {
             if ($minutes > 30) {
                 $hour   += 1;
                 $minutes = 60 - $minutes;
             }
         }
 
+        $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutes)], $string);
 
-        $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutes)], $string) . " " . $meridian;
-
-        print_r ( $time['hour'] . ":" . $time['minutes'] . ": " . $ret . PHP_EOL);
-
+        //print_r ( $time['hour'] . ":" . $time['minutes'] . ": " . $ret . PHP_EOL);
+        return $ret;
     }
 
+    /**
+     * get string switch case (with language conditional)
+     * @param $minutes
+     * @param $text
+     * @param $suff
+     * @return mixed
+     */
+    private function getStringSwitchCase ($minutes, $text, $suff) {
+        $lang = $this->lang;
+        switch ($minutes) {
+                case 00:
+                    $string = $text['FULL'];
+                    break;
+                case 15:
+                    $string = $text['QUARTER_PAST'];
+                    break;
+                case 30:
+                    $string = $text['HALF_PAST'];
+                    break;
+                case 45:
+                    $string = $text['QUARTER_TO'];
+                    break;
+                default:
+                    $string = $text['MINUTES_' . $suff];
+                    break;
+
+        }
+
+        if ($lang == self::LANG_DE) {
+            switch ($minutes) {
+                case 25:
+                    $string = $text['FIVE_TO_HALF'];
+                    break;
+                case 35:
+                    $string = $text['FIVE_PAST_HALF'];
+            }
+        }
+
+        return $string;
+    }
+
+    /**
+     * Replace template with text elements
+     * @param $hour
+     * @param $minutes
+     * @param $string
+     * @return string
+     */
     private function getTimeString($hour, $minutes, $string) {
-        $text = str_replace('{HOUR}', $hour, $string);
-        $ret  = str_replace('{MINUTES}', $minutes, $text);
+        $text  = str_replace('{MINUTES}', $minutes, $string);
+        $ret   = str_replace('{HOUR}', $hour, $text);
         return strtoupper($ret);
     }
-/*
-    private function time2TextHour($hourText, $sentence) {
-        return preg_replace( '{HOUR}', $hourText, $sentence);
-    }
-
-    private function time2TextMinutes($minuteText, $sentence) {
-        return preg_replace('{MINUTES}', $minuteText, $sentence);
-    }*/
 
 
     /**
      * ELEMENTS - FUNCTIONS
      */
 
-    private function setBlockActive() {
-        if (!$this->isBlockActive()) {
-            echo 'active';
-        } else {
-            echo '';
-        }
-    }
-    private function isBlockActive() {
-
-    }
-
-    private function checkTime2Text($time = null) {
-        if (!$time) {
-            $time = $this->now();
-        }
-
-    }
-    private function resetBlock() {
-        //block is active, remove 'active' from class
-    }
-
-    /**
-     * get words and filler for clock as array
-     * @param $stringSet
-     * @return array
-     */
-    public function getClockFaceArray($lang = Clock_Object::LANG_DEFAULT) {
-        $stringValue    = '';
-        $classArr       = [];
-        foreach ($this->elementArray[$lang] as $element) {
-            $length     = strlen($element[0]);
-            for ($j = 0; $j < $length; $j++) {
-                $classArr[] = $element['class'];
-            }
-            $stringValue .= $element[0];
-        }
-        $letterArr = str_split($stringValue);
-        $num = count($letterArr);
-        $newArr = [];
-        for ($i = 0; $i < $num; $i++) {
-            $newArr[] = [$letterArr[$i], $classArr[$i]];
-        }
-        return $newArr;
-    }
-
-    private function getClockText() {
-
+    public function getClockFaceArray() {
+        $data = $this->time2text;
+        $rows = $data['clockRows'];
+        return $rows;
     }
 
     /**
      * build table from clockFaceArray
      * @return string
      */
-    public function buildClock($lang = Clock_Object::LANG_DEFAULT) {
-        $arr = $this->getClockFaceArray($lang);
+    public function buildClock() {
+        $arr = $this->getClockFaceArray();
+        $active = $this->startClock();
 
+        print_r($active . PHP_EOL);
         $table = '<table>';
 
+        foreach ($arr as $row) {
+            print_r($row . PHP_EOL);
+            $block = str_split($row);
 
-        $length = count($arr);
-        $i = 0;
+            $class = '';
+            $i = 0;
+            foreach ($block as $element) {
 
-        foreach ($arr as $key => $block) {
-            $id         =   $key;
-            $element    =   $block[0];
-            $class      =   $block[1];
+                if($i % Clock_Object::COL_NUM == 0) {
+                    $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
+                } else {
+                    /*if () {
+                        $table .= '<td><div class="block ' . $class . '">' . $element . "'" . '</div></td>';
+                    } else {*/
+                        $table .= '<td><div class="block ' . $class . '">' . $element . '</div></td>';
+                   //}
+                }
+                $i++;
+            }
 
             // if $i is divisible by 11
-            if($i % Clock_Object::COL_NUM == 0) {
-                $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
-            } else {
-                if ($lang == 'en' && $key == 104) {
-                    $table .= '<td><div class="block ' . $class . '">' . $element . "'" . '</div></td>';
-                } else {
-                    $table .= '<td><div class="block ' . $class . '">' . $element . '</div></td>';
-                }
-            }
-            $i++;
+
         }
         $table .= '</tr></table';
         return $table;

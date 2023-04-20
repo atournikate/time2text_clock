@@ -1,7 +1,7 @@
 {
   "en":  {
       "text": {
-        "FULL":         "it is {HOUR} o clock",
+        "FULL":         "it is {HOUR} oclock",
         "MINUTES_PAST": "it is {MINUTES} past {HOUR}",
         "HALF_PAST":    "it is half past {HOUR}",
         "QUARTER_PAST": "it is a quarter past {HOUR}",
@@ -78,28 +78,28 @@
   },
   "tr": {
     "text": {
-      "FULL":          "saat {HOURS}",
-      "MINUTES_PAST":  "saat {HOURS} {MINUTES} geçiyor",
-      "HALF_PAST":     "saat {HOURS} buçukit",
-      "QUARTER_PAST":  "saat {HOURS} çeyrek geçiyor",
-      "QUARTER_TO":    "saat {HOURS} çeyrek var",
-      "MINUTES_TO":    "saat {HOURS} {MINUTES} var"
+      "FULL":          "saat {HOUR}",
+      "MINUTES_PAST":  "saat {HOUR} {MINUTES} geçiyor",
+      "HALF_PAST":     "saat {HOUR} buçukit",
+      "QUARTER_PAST":  "saat {HOUR} çeyrek geçiyor",
+      "QUARTER_TO":    "saat {HOUR} çeyrek var",
+      "MINUTES_TO":    "saat {HOUR} {MINUTES} var"
     },
     "numbers": {
-      "1":  "bir",
-      "2":  "iki",
-      "3":  "üç",
-      "4":  "dört",
-      "5":  "beş",
-      "6":  "altı",
-      "7":  "yedi",
-      "8":  "sekiz",
-      "9":  "dokuz",
-      "10": "on",
-      "11": "on bir",
-      "12": "on iki",
-      "20": "yirmi",
-      "25": "yirmi beş"
+      "1":  "BIR",
+      "2":  "IKI",
+      "3":  "ÜÇ",
+      "4":  "DÖRT",
+      "5":  "BEŞ",
+      "6":  "ALTI",
+      "7":  "YEDI",
+      "8":  "SEKIZ",
+      "9":  "DOKUZ",
+      "10": "ON",
+      "11": "ON BIR",
+      "12": "ON IKI",
+      "20": "YIRMI",
+      "25": "YIRMI BEŞ"
     },
     "clockRows": {
       "1":  "SAATXSABAHD",
@@ -116,12 +116,12 @@
   },
   "jp": {
     "text": {
-      "FULL":          "今は{HOURS}時です",
-      "MINUTES_PAST":  "今は{HOURS}時{MINUTES}分です",
-      "HALF_PAST":     "今は{HOURS}時半です",
-      "QUARTER_PAST":  "今は{HOURS}時{MINUTES}分です",
-      "QUARTER_TO":    "今は{HOURS}時{MINUTES}分です",
-      "MINUTES_TO":    "今は{HOURS}時{MINUTES}分です"
+      "FULL":          "今は{HOUR}時です",
+      "MINUTES_PAST":  "今は{HOUR}時{MINUTES}分です",
+      "HALF_PAST":     "今は{HOUR}時半です",
+      "QUARTER_PAST":  "今は{HOUR}時{MINUTES}分です",
+      "QUARTER_TO":    "今は{HOUR}時{MINUTES}分です",
+      "MINUTES_TO":    "今は{HOUR}時{MINUTES}分です"
     },
     "numbers": {
       "1":  "一",
@@ -136,8 +136,14 @@
       "10": "十",
       "11": "十一",
       "12": "十二",
+      "15": "十五",
       "20": "二十",
-      "25": "二十五"
+      "25": "二十五",
+      "35": "三十五",
+      "40": "四十",
+      "45": "四十五",
+      "50": "五十",
+      "55": "五十五"
     },
     "clockRows": {
       "1":  "今(✿◠‿◠)は0_O",

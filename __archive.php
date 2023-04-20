@@ -295,3 +295,62 @@
 /*private function getMinuteIndex($minutes) {
     return $minutes / 5;
 }*/
+/**
+ * get words and filler for clock as array
+ * @param $stringSet
+ * @return array
+ */
+/*public function getClockFaceArray() {
+    $lang = $this->lang;
+    $stringValue    = '';
+    $classArr       = [];
+    foreach ($this->elementArray[$lang] as $element) {
+        $length     = strlen($element[0]);
+        for ($j = 0; $j < $length; $j++) {
+            $classArr[] = $element['class'];
+        }
+        $stringValue .= $element[0];
+    }
+    $letterArr = str_split($stringValue);
+    $num = count($letterArr);
+    $newArr = [];
+    for ($i = 0; $i < $num; $i++) {
+        $newArr[] = [$letterArr[$i], $classArr[$i]];
+    }
+    return $newArr;
+}*/
+
+
+/**
+ * build table from clockFaceArray
+ * @return string
+ */
+/*public function buildClock($lang = Clock_Object::LANG_DEFAULT) {
+    $arr = $this->getClockFaceArray($lang);
+
+    $table = '<table>';
+
+
+    $length = count($arr);
+    $i = 0;
+
+    foreach ($arr as $key => $block) {
+        $id         =   $key;
+        $element    =   $block[0];
+        $class      =   $block[1];
+
+        // if $i is divisible by 11
+        if($i % Clock_Object::COL_NUM == 0) {
+            $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
+        } else {
+            if ($lang == 'en' && $key == 104) {
+                $table .= '<td><div class="block ' . $class . '">' . $element . "'" . '</div></td>';
+            } else {
+                $table .= '<td><div class="block ' . $class . '">' . $element . '</div></td>';
+            }
+        }
+        $i++;
+    }
+    $table .= '</tr></table';
+    return $table;
+}*/

@@ -15,11 +15,12 @@ $testTimes = [
     '11:54',
     '23:59',
 ];
-$clock = new Clock_Object($testTimes);
+$clock = new Clock_Object();
+$lang = $clock->lang;
 
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="<?php $lang ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
