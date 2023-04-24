@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 * {
     padding: 0;
     margin: 0;
@@ -22,7 +24,7 @@ html {
     align-items: center;
     color: #0f5865;
     background-color: #f7f7ff;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Noto Sans", sans-serif;
     font-size: 24px;
     font-weight: 400;
     text-align: center;
@@ -34,7 +36,8 @@ html {
 
 .always,
 .active {
-    color: #b73ecc;
-    text-shadow: 1px 1px 2px #d87cff, 0 0 1em #4b3ea8, 0 0 0.2em #8b00ab;
+    color: #ffb9f3;
+    text-shadow: 1px 1px 6px #4909b2, 2px 2px 0.5rem #cf6cff, 2px 1px 1em #f71aff, 1px 5px 2em #ff0061;
+    background-color: #b299d5;
 }
 

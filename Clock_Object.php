@@ -12,7 +12,7 @@ class Clock_Object {
     const LANG_DEFAULT      =   'en';
     const LANG_DE           =   'de';
     const LANG_TR           =   'tr';
-    const LANG_JP           =   'jp';
+    const LANG_JA           =   'ja';
 
     const ROW_NUM           =   10;
     const COL_NUM           =   11;
@@ -110,6 +110,7 @@ class Clock_Object {
         if (!$time) {
             $time    =   $this->now();
         }
+
         $hour = $this->getHourFromString($time);
         $ret = $this->convertHourTo12HrIncrement($hour);
         return $ret;
@@ -167,11 +168,21 @@ class Clock_Object {
         if (!$time) {
             $time    =   $this->now();
         }
+        $lang = $this->lang;
+
         $hour = $this->getHourFromString($time);
         if ($hour < 12) {
+            if ($lang == self::LANG_JA) {
+                $meridian = '午朝';
+            } else {
             $meridian = 'am';
+            }
         } else {
+            if ($lang == self::LANG_JA) {
+                $meridian = '午夜';
+            } else {
             $meridian = 'pm';
+            }
         }
         return $meridian;
     }
@@ -254,11 +265,13 @@ class Clock_Object {
                 $hour   += 1;
                 $minutes = 60 - $minutes;
             }
+            $hour = $this->convertHourTo12HrIncrement($hour);
         } elseif ($this->lang == self::LANG_DEFAULT || $this->lang == self::LANG_TR) {
             if ($minutes > 30) {
                 $hour   += 1;
                 $minutes = 60 - $minutes;
             }
+            $hour = $this->convertHourTo12HrIncrement($hour);
         }
 
         $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutes)], $string);
@@ -334,28 +347,47 @@ class Clock_Object {
     public function getClockFaceString()
     {
         $arr = $this->getClockFaceArray();
+
         $string = '';
         foreach ($arr as $row) {
             $string .= $row;
         }
+
         return $string;
     }
 
     public function getElementClass() {
         $time = $this->startClock();
-        $wordArr = explode(' ', $time);
-        $wordArr[] = strtoupper($this->getMeridian());
+
+        $lang = $this->lang;
+        if ($lang == self::LANG_JA) {
+            $wordArr = mb_str_split($time);
+            $wordArr[] = $this->getMeridian();
+        } else {
+            $wordArr = explode( ' ', $time);
+            $wordArr[] = strtoupper($this->getMeridian());
+        }
+
         $rowString = $this->getClockFaceString();
 
-        $elementArr = str_split($rowString);
+        $elementArr = mb_str_split($rowString);
+        print_r($elementArr);
         $num = count($wordArr);
 
         for ($i = 0; $i < $num; $i++) {
-            preg_match('/('. $wordArr[$i] . ')/', $rowString, $matches, PREG_OFFSET_CAPTURE);
+            if ($lang == self::LANG_JA) {
+                mb_ereg('/(' . $wordArr[$i] . ')/', $rowString, $matches);
+            } else {
+
+                preg_match('/(' . $wordArr[$i] . ')/', $rowString, $matches, PREG_OFFSET_CAPTURE);
+            }
+
+            print_r($matches);
+
             $length = strlen($wordArr[$i]);
             $start = $matches[0][1];
-
             $end = $start + $length;
+
             for ($j = $start; $j < $end; $j++) {
                 foreach ($elementArr as $key => $value) {
                     if ($key == $j) {
@@ -374,20 +406,18 @@ class Clock_Object {
      * @return string
      */
     public function buildClock() {
-        $element = $this->getElementClass();
+        $elementClass = $this->getElementClass();
 
         $table = '<table>';
 
-        foreach ($element as $block) {
+        foreach ($elementClass as $block) {
+
             $element = $block[0];
             $class = $block[1];
 
                 if($i % Clock_Object::COL_NUM == 0) {
                     $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
                 } else {
-                    /*if () {
-                        $table .= '<td><div class="block ' . $class . '">' . $element . "'" . '</div></td>';
-                    } else {*/
                         $table .= '<td><div class="block ' . $class . '">' . $element . '</div></td>';
                    //}
                 }
