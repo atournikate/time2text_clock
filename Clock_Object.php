@@ -41,8 +41,7 @@ class Clock_Object {
 
     /**
      * test CLI Clock
-     * @param string $lang
-     * @return void
+     * @return array|string|null
      */
     public function startClock() {
         $time = $this->getFormattedTime();
@@ -224,11 +223,8 @@ class Clock_Object {
 
     /**
      * get the text from time elements based on language
-     * @param $minutes
-     * @param $hour
-     * @param $meridian
-     * @param string $lang
-     * @return void
+     * @param $time
+     * @return string
      */
     private function getTime2Text($time) {
 
@@ -267,7 +263,6 @@ class Clock_Object {
 
         $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutes)], $string);
 
-        //print_r ( $time['hour'] . ":" . $time['minutes'] . ": " . $ret . PHP_EOL);
         return $ret;
     }
 
@@ -336,24 +331,56 @@ class Clock_Object {
         return $rows;
     }
 
+    public function getClockFaceString()
+    {
+        $arr = $this->getClockFaceArray();
+        $string = '';
+        foreach ($arr as $row) {
+            $string .= $row;
+        }
+        return $string;
+    }
+
+    public function getElementClass() {
+        $time = $this->startClock();
+        $wordArr = explode(' ', $time);
+        $wordArr[] = strtoupper($this->getMeridian());
+        $rowString = $this->getClockFaceString();
+
+        $elementArr = str_split($rowString);
+        $num = count($wordArr);
+
+        for ($i = 0; $i < $num; $i++) {
+            preg_match('/('. $wordArr[$i] . ')/', $rowString, $matches, PREG_OFFSET_CAPTURE);
+            $length = strlen($wordArr[$i]);
+            $start = $matches[0][1];
+
+            $end = $start + $length;
+            for ($j = $start; $j < $end; $j++) {
+                foreach ($elementArr as $key => $value) {
+                    if ($key == $j) {
+                        $elementArr[$key] = [$value, 'active'];
+                    }
+                }
+            }
+        }
+
+        return $elementArr;
+    }
+
+
     /**
      * build table from clockFaceArray
      * @return string
      */
     public function buildClock() {
-        $arr = $this->getClockFaceArray();
-        $active = $this->startClock();
+        $element = $this->getElementClass();
 
-        print_r($active . PHP_EOL);
         $table = '<table>';
 
-        foreach ($arr as $row) {
-            print_r($row . PHP_EOL);
-            $block = str_split($row);
-
-            $class = '';
-            $i = 0;
-            foreach ($block as $element) {
+        foreach ($element as $block) {
+            $element = $block[0];
+            $class = $block[1];
 
                 if($i % Clock_Object::COL_NUM == 0) {
                     $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
@@ -365,7 +392,6 @@ class Clock_Object {
                    //}
                 }
                 $i++;
-            }
 
             // if $i is divisible by 11
 
