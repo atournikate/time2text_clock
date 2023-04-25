@@ -2,6 +2,7 @@
 error_reporting(E_ERROR);
 
 class Clock_Object {
+    private $time2Text;
     /**
      * CONSTANTS
      */
@@ -24,20 +25,191 @@ class Clock_Object {
             $this->time = $time;
         }
         $this->lang = $langSelected;
-        $this->time2text  = $this->getJSON2PHP();
+        $this->time2text  = $this->getTime2TextArray();
+    }
+
+    private function getTime2TextArray() {
+        $time2Text =[
+            'en' => [
+                'text' => [
+                    'FULL' => 'IT IS {HOUR} OCLOCK',
+                    'MINUTES_PAST' => 'IT IS {MINUTES} PAST {HOUR}',
+                    'HALF_PAST' => 'IT IS HALF PAST {HOUR}',
+                    'QUARTER_PAST' => 'IT IS A QUARTER PAST {HOUR}',
+                    'QUARTER_TO' => 'IT IS A QUARTER TO {HOUR}',
+                    'MINUTES_TO' => 'IT IS {MINUTES} TO {HOUR}',
+                ],
+                'numbers' => [
+                    '0' => 'TWELVE',
+                    '1' => 'ONE',
+                    '2' => 'TWO',
+                    '3' => 'THREE',
+                    '4' => 'FOUR',
+                    '5' => 'FIVE',
+                    '6' => 'SIX',
+                    '7' => 'SEVEN',
+                    '8' => 'EIGHT',
+                    '9' => 'NINE',
+                    '10' => 'TEN',
+                    '11' => 'ELEVEN',
+                    '12' => 'TWELVE',
+                    '20' => 'TWENTY',
+                    '25' => 'TWENTYFIVE',
+                ],
+                'clockRows' => [
+                    '1' => 'ITLISJKAMPM',
+                    '2' => 'ACQUARTERDC',
+                    '3' => 'TWENTYFIVEX',
+                    '4' => 'HALFSTENFTO',
+                    '5' => 'PASTERUNINE',
+                    '6' => 'ONESIXTHREE',
+                    '7' => 'FOURFIVETWO',
+                    '8' => 'EIGHTELEVEN',
+                    '9' => 'SEVENTWELVE',
+                    '10' => 'TENSEOCLOCK'
+                ]
+            ],
+            'de' => [
+                'text' => [
+                    'FULL' => 'ES IST {HOUR} UHR',
+                    'MINUTES_PAST' => 'ES IST {MINUTES} NACH {HOUR}',
+                    'FIVE_TO_HALF' => 'ES IST FÜNF VOR HALB {HOUR}',
+                    'HALF_PAST' => 'ES IST HALB {HOUR}',
+                    'FIVE_PAST_HALF'    => 'ES IST FÜNF NACH HALB {HOUR}',
+                    'QUARTER_PAST' => 'ES IST VIERTEL NACH {HOUR}',
+                    'QUARTER_TO' => 'ES IST VIERTEL VOR {HOUR}',
+                    'MINUTES_TO' => 'ES IST {MINUTES} VOR {HOUR}',
+                ],
+                'numbers' => [
+                    '0' => 'ZWÖLF',
+                    '1' => 'EINS',
+                    '2' => 'ZWEI',
+                    '3' => 'DREI',
+                    '4' => 'VIER',
+                    '5' => 'FÜNF',
+                    '6' => 'SECHS',
+                    '7' => 'SIEBEN',
+                    '8' => 'ACHT',
+                    '9' => 'NEUN',
+                    '10' => 'ZEHN',
+                    '11' => 'ELF',
+                    '12' => 'ZWÖLF',
+                    '20' => 'ZWANZIG'
+                ],
+                'clockRows' => [
+                    '1' => 'ESKISTAFÜNF',
+                    '2' => 'ZEHNZWANZIG',
+                    '3' => 'DREIVIERTEL',
+                    '4' => 'VORLSNKNACH',
+                    '5' => 'HALBAELFÜNF',
+                    '6' => 'EINSXAMZWEI',
+                    '7' => 'DREIPMJVIER',
+                    '8' => 'SECHSNLACHT',
+                    '9' => 'SIEBENZWÖLF',
+                    '10' => 'ZEHNEUNKUHR'
+                ]
+            ],
+            'tr' => [
+                'text' => [
+                    'FULL' => 'SAAT {HOUR}',
+                    'MINUTES_PAST' => 'SAAT {HOUR} {MINUTES} GEÇIYOR',
+                    'HALF_PAST' => 'SAAT {HOUR} BUÇUKIT',
+                    'QUARTER_PAST' => 'SAAT {HOUR} ÇEYREK GEÇIYOR',
+                    'QUARTER_TO' => 'SAAT {HOUR} ÇEYREK VAR',
+                    'MINUTES_TO' => 'SAAT {HOUR} {MINUTES} VAR',
+                ],
+                'numbers' => [
+                    '0' => 'ON IKI',
+                    '1' => 'BIR',
+                    '2' => 'IKI',
+                    '3' => 'ÜÇ',
+                    '4' => 'DÖRT',
+                    '5' => 'BEŞ',
+                    '6' => 'ALTI',
+                    '7' => 'YEDI',
+                    '8' => 'SEKIZ',
+                    '9' => 'DOKUZ',
+                    '10' => 'ON',
+                    '11' => 'ON BIR',
+                    '12' => 'ON IKI',
+                    '20' => 'YIRMI',
+                    '25' => 'YIRMI BEŞ'
+                ],
+                'clockRows' => [
+                    '1' => 'SAATXSABAHD',
+                    '2' => 'AKŞAMNONJKL',
+                    '3' => 'BIRUIKIYÜÇI',
+                    '4' => 'DÖRTABEŞDIG',
+                    '5' => 'ALTIVYEDIEF',
+                    '6' => 'SEKIZHDOKUZ',
+                    '7' => 'YIRMIPBEŞUD',
+                    '8' => 'ZONYÇEYREKS',
+                    '9' => 'VARMGBUÇUKL',
+                    '10' => 'GEÇIYORCTBO'
+                ]
+            ],
+            'ja' => [
+                'text' => [
+                    'FULL' => '今は{HOUR}時です',
+                    'MINUTES_PAST' => '今は{HOUR}時{MINUTES}分です',
+                    'HALF_PAST' => '今は{HOUR}時半です',
+                    'QUARTER_PAST' => '今は{HOUR}時{MINUTES}分です',
+                    'QUARTER_TO' => '今は{HOUR}時{MINUTES}分です',
+                    'MINUTES_TO' => '今は{HOUR}時{MINUTES}分です',
+                ],
+                'numbers' => [
+                    '0' => 'ON IKI',
+                    '1' => '一',
+                    '2' => '二',
+                    '3' => '三',
+                    '4' => '四',
+                    '5' => '五',
+                    '6' => '六',
+                    '7' => '七',
+                    '8' => '八',
+                    '9' => '九',
+                    '10' => '十',
+                    '11' => '十一',
+                    '12' => '十二',
+                    '15' => '十五',
+                    '20' => '二十',
+                    '25' => '二十五',
+                    '35' => '三十五',
+                    '40' => '四十',
+                    '45' => '四十五',
+                    '50' => '五十',
+                    '55' => '五十五'
+                ],
+                'clockRows' => [
+                    '1' => '今花鳥風月は✿水に流す',
+                    '2' => '十一二三四五六七八九時',
+                    '3' => '一二三四五和陰陽平和十',
+                    '4' => '一二三四五六七八九歌分',
+                    '5' => '✿月に遠くおぼゆる藤の',
+                    '6' => '色香かな✿光陰矢の如し',
+                    '7' => '明日は明日の風が吹く✿',
+                    '8' => '七転び八起き✿因果応報',
+                    '9' => '涙午朝午夜✿急がば回れ',
+                    '10' => '自業自得✿起死回生です'
+                ]
+            ]
+        ];
+        $lang = $this->lang;
+        return $time2Text[$lang];
     }
 
     /**
      * convert json data to array, return array of selected language
      * @return mixed
      */
-    private function getJSON2PHP() {
-        $lang       = $this->lang;
+/*    private function getJSON2PHP() {
+        //$lang       = $this->lang;
         $filePath   = self::ROOT . 'lang.json';
         $file       = file_get_contents($filePath);
         $ret        = json_decode($file, true);
+        print_r($ret); exit;
         return $ret[$lang];
-    }
+    }*/
 
     /**
      * test CLI Clock
@@ -45,9 +217,8 @@ class Clock_Object {
      */
     public function startClock() {
         $time = $this->getFormattedTime();
-
         $count = count($time);
-        if ($count > 3) {
+        if ($count > 4) {
             $ret = [];
             $num = count($time);
             for ($i = 0; $i < $num; $i++) {
@@ -154,6 +325,9 @@ class Clock_Object {
     private function convertHourTo12HrIncrement(int $hour) {
         if ($hour <= 12) {
             return $hour;
+        } elseif ($hour >= 24) {
+            $hour = 0;
+            return $hour;
         } else {
             return (round($hour - 12));
         }
@@ -164,24 +338,20 @@ class Clock_Object {
      * @param string|null $time
      * @return string
      */
-    private function getMeridian(string $time = null) {
-        if (!$time) {
-            $time    =   $this->now();
-        }
+    private function getMeridian(string $hour) {
         $lang = $this->lang;
 
-        $hour = $this->getHourFromString($time);
-        if ($hour < 12) {
+        if ($hour < 12 || $hour == 24) {
             if ($lang == self::LANG_JA) {
                 $meridian = '午朝';
             } else {
-            $meridian = 'am';
+            $meridian = ' AM';
             }
         } else {
             if ($lang == self::LANG_JA) {
                 $meridian = '午夜';
             } else {
-            $meridian = 'pm';
+            $meridian = ' PM';
             }
         }
         return $meridian;
@@ -193,12 +363,34 @@ class Clock_Object {
      * @return array
      */
     private function formatTimeString($time) {
-         $arr        =   [
-            //'24hour'    => $this->getHourFromString($time),
-            'hour'      => $this->get12HourIncrement($time),
-            'minutes'   => $this->get5MinuteInterval($time),
-            'meridian'  =>  $this->getMeridian($time)
+        $lang       = $this->lang;
+        $hour       = $this->getHourFromString($time);
+        $minutes    = $this->get5MinuteInterval($time);
+
+        // adjust time after the half hour
+        if ($lang == self::LANG_DE) {
+            if ($minutes >= 30) {
+                $hour   += 1;
+                $minutesAdjusted = 60 - $minutes;
+            }
+        } elseif ($this->lang == self::LANG_DEFAULT || $this->lang == self::LANG_TR) {
+            if ($minutes > 30) {
+                $hour   += 1;
+                $minutesAdjusted = 60 - $minutes;
+
+            }
+        }
+
+        $hourAdjusted = $this->convertHourTo12HrIncrement($hour);
+        $meridian = $this->getMeridian($hour);
+
+        $arr        =   [
+             'hour'                 =>  $hourAdjusted,
+             'minutes'              =>  $minutes,
+             'minutes_adjusted'     =>  $minutesAdjusted,
+             'meridian'             =>  $meridian
         ];
+
         return $arr;
     }
 
@@ -242,7 +434,8 @@ class Clock_Object {
         //get elements from time
         $hour       = $time['hour'];
         $minutes    = $time['minutes'];
-        $meridian   = strtoupper($time['meridian']);
+        $meridian   = $time['meridian'];
+        $minutesAdjusted    = $time['minutes_adjusted'];
 
         // get json data
         $data       = $this->time2text;
@@ -251,30 +444,15 @@ class Clock_Object {
         $text       = $data['text'];
         $numbers    = $data['numbers'];
 
-        if ($minutes < 30) {
-            $suff = "PAST";
+
+        $string = $this->getStringSwitchCase($minutes, $text);
+
+
+        if ($minutes <= 30) {
+        $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutes)], $meridian, $string);
         } else {
-            $suff = "TO";
+            $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutesAdjusted)], $meridian, $string);
         }
-
-        $string = $this->getStringSwitchCase($minutes, $text, $suff);
-
-        // adjust time after the half hour
-        if ($this->lang == self::LANG_DE) {
-            if ($minutes >= 30) {
-                $hour   += 1;
-                $minutes = 60 - $minutes;
-            }
-            $hour = $this->convertHourTo12HrIncrement($hour);
-        } elseif ($this->lang == self::LANG_DEFAULT || $this->lang == self::LANG_TR) {
-            if ($minutes > 30) {
-                $hour   += 1;
-                $minutes = 60 - $minutes;
-            }
-            $hour = $this->convertHourTo12HrIncrement($hour);
-        }
-
-        $ret = $this->getTimeString($numbers[$hour], $numbers[intval($minutes)], $string);
 
         return $ret;
     }
@@ -286,8 +464,14 @@ class Clock_Object {
      * @param $suff
      * @return mixed
      */
-    private function getStringSwitchCase ($minutes, $text, $suff) {
+    private function getStringSwitchCase ($minutes, $text) {
         $lang = $this->lang;
+        if ($minutes < 30) {
+            $suff = "PAST";
+        } else {
+            $suff = "TO";
+        }
+
         switch ($minutes) {
                 case 00:
                     $string = $text['FULL'];
@@ -302,6 +486,7 @@ class Clock_Object {
                     $string = $text['QUARTER_TO'];
                     break;
                 default:
+
                     $string = $text['MINUTES_' . $suff];
                     break;
 
@@ -327,12 +512,12 @@ class Clock_Object {
      * @param $string
      * @return string
      */
-    private function getTimeString($hour, $minutes, $string) {
+    private function getTimeString($hour, $minutes, $meridian, $string) {
         $text  = str_replace('{MINUTES}', $minutes, $string);
         $ret   = str_replace('{HOUR}', $hour, $text);
-        return strtoupper($ret);
+        $ret  .=  $meridian;
+        return $ret;
     }
-
 
     /**
      * ELEMENTS - FUNCTIONS
@@ -357,36 +542,26 @@ class Clock_Object {
     }
 
     public function getElementClass() {
-        $time = $this->startClock();
-
         $lang = $this->lang;
-        if ($lang == self::LANG_JA) {
-            $wordArr = mb_str_split($time);
-            $wordArr[] = $this->getMeridian();
-        } else {
-            $wordArr = explode( ' ', $time);
-            $wordArr[] = strtoupper($this->getMeridian());
-        }
+        $time = $this->startClock();
+        $wordArr = explode( ' ', $time);
 
         $rowString = $this->getClockFaceString();
 
         $elementArr = mb_str_split($rowString);
-        print_r($elementArr);
+
         $num = count($wordArr);
 
         for ($i = 0; $i < $num; $i++) {
-            if ($lang == self::LANG_JA) {
-                mb_ereg('/(' . $wordArr[$i] . ')/', $rowString, $matches);
-            } else {
 
-                preg_match('/(' . $wordArr[$i] . ')/', $rowString, $matches, PREG_OFFSET_CAPTURE);
-            }
+            preg_match('/(' . $wordArr[$i] . ')/', $rowString, $matches, PREG_OFFSET_CAPTURE);
 
             print_r($matches);
 
             $length = strlen($wordArr[$i]);
             $start = $matches[0][1];
             $end = $start + $length;
+            print_r( "The $wordArr[$i] is $length long, and starts at $start and ends at $end. <br>");
 
             for ($j = $start; $j < $end; $j++) {
                 foreach ($elementArr as $key => $value) {
@@ -406,6 +581,7 @@ class Clock_Object {
      * @return string
      */
     public function buildClock() {
+
         $elementClass = $this->getElementClass();
 
         $table = '<table>';
@@ -415,18 +591,18 @@ class Clock_Object {
             $element = $block[0];
             $class = $block[1];
 
-                if($i % Clock_Object::COL_NUM == 0) {
-                    $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
-                } else {
-                        $table .= '<td><div class="block ' . $class . '">' . $element . '</div></td>';
-                   //}
-                }
-                $i++;
+            if($i % Clock_Object::COL_NUM == 0) {
+                $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
+            } else {
+                    $table .= '<td><div class="block ' . $class . '">' . $element . '</div></td>';
 
-            // if $i is divisible by 11
+            }
+            $i++;
+
+
 
         }
-        $table .= '</tr></table';
+        $table .= '</tr></table>';
         return $table;
     }
 

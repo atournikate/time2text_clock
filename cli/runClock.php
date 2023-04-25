@@ -18,11 +18,11 @@ class runClock {
             '11:54',
             '23:59',
         ];
-        $clock = new Clock_Object();
-        print_r($clock->startClock());
+/*        $clock = new Clock_Object($testTimes);
+        print_r($clock->startClock());*/
 
- /*       $clockDE = new Clock_Object($testTimes, Clock_Object::LANG_DE);
-        $clockDE->startClock();*/
+        $clockDE = new Clock_Object($testTimes, Clock_Object::LANG_DE);
+        $clockDE->startClock();
 
 /*        $clockTR = new Clock_Object($testTimes, Clock_Object::LANG_TR);
         $clockTR->startClock();*/

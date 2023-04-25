@@ -1,41 +1,42 @@
 {
   "en":  {
-      "text": {
-        "FULL":         "it is {HOUR} oclock",
-        "MINUTES_PAST": "it is {MINUTES} past {HOUR}",
-        "HALF_PAST":    "it is half past {HOUR}",
-        "QUARTER_PAST": "it is a quarter past {HOUR}",
-        "QUARTER_TO":   "it is a quarter to {HOUR}",
-        "MINUTES_TO":   "it is {MINUTES} to {HOUR}"
-      },
-      "numbers": {
-        "1":  "one",
-        "2":  "two",
-        "3":  "three",
-        "4":  "four",
-        "5":  "five",
-        "6":  "six",
-        "7":  "seven",
-        "8":  "eight",
-        "9":  "nine",
-        "10": "ten",
-        "11": "eleven",
-        "12": "twelve",
-        "20": "twenty",
-        "25": "twentyfive"
-      },
-      "clockRows": {
-        "1":  "ITLISJKAMPM",
-        "2":  "ACQUARTERDC",
-        "3":  "TWENTYFIVEX",
-        "4":  "HALFSTENFTO",
-        "5":  "PASTERUNINE",
-        "6":  "ONESIXTHREE",
-        "7":  "FOURFIVETWO",
-        "8":  "EIGHTELEVEN",
-        "9":  "SEVENTWELVE",
-        "10":  "TENSEOCLOCK"
-      }
+    "text": {
+      "FULL":         "it is {HOUR} oclock",
+      "MINUTES_PAST": "it is {MINUTES} past {HOUR}",
+      "HALF_PAST":    "it is half past {HOUR}",
+      "QUARTER_PAST": "it is a quarter past {HOUR}",
+      "QUARTER_TO":   "it is a quarter to {HOUR}",
+      "MINUTES_TO":   "it is {MINUTES} to {HOUR}"
+    },
+    "numbers": {
+      "0":  "twelve",
+      "1":  "one",
+      "2":  "two",
+      "3":  "three",
+      "4":  "four",
+      "5":  "five",
+      "6":  "six",
+      "7":  "seven",
+      "8":  "eight",
+      "9":  "nine",
+      "10": "ten",
+      "11": "eleven",
+      "12": "twelve",
+      "20": "twenty",
+      "25": "twentyfive"
+    },
+    "clockRows": {
+      "1":  "ITLISJKAMPM",
+      "2":  "ACQUARTERDC",
+      "3":  "TWENTYFIVEX",
+      "4":  "HALFSTENFTO",
+      "5":  "PASTERUNINE",
+      "6":  "ONESIXTHREE",
+      "7":  "FOURFIVETWO",
+      "8":  "EIGHTELEVEN",
+      "9":  "SEVENTWELVE",
+      "10":  "TENSEOCLOCK"
+    }
   },
   "de": {
     "text": {
@@ -49,6 +50,7 @@
       "MINUTES_TO":   "es ist {MINUTES} vor {HOUR}"
     },
     "numbers": {
+      "0":  "zwölf",
       "1":  "eins",
       "2":  "zwei",
       "3":  "drei",
@@ -58,9 +60,9 @@
       "7":  "sieben",
       "8":  "acht",
       "9":  "neun",
-      "10": "zen",
+      "10": "zehn",
       "11": "elf",
-      "12": "zwolf",
+      "12": "zwölf",
       "20": "zwanzig"
     },
     "clockRows": {
@@ -146,16 +148,17 @@
       "55": "五十五"
     },
     "clockRows": {
-      "1":  "今(✿◠‿◠)は0_O",
+      "1":  "今花鳥風月は✿水に流す",
       "2":  "十一二三四五六七八九時",
       "3":  "一二三四五和陰陽平和十",
       "4":  "一二三四五六七八九歌分",
       "5":  "✿月に遠くおぼゆる藤の",
-      "6":  "色香かな✿中々にひとり",
-      "7":  "あればぞ月を友与謝蕪村",
-      "8":  "行く春や鳥啼き魚の目は涙",
-      "9":  "午朝午夜✿┐(ﾟ～ﾟ)┌✿",
-      "10":  "✿d(-_^)✿✿です"
+      "6":  "色香かな✿光陰矢の如し",
+      "7":  "明日は明日の風が吹く✿",
+      "8":  "七転び八起き✿因果応報",
+      "9":  "涙午朝午夜✿急がば回れ",
+      "10": "自業自得✿起死回生です"
     }
   }
 }
+

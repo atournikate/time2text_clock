@@ -354,3 +354,19 @@
     $table .= '</tr></table';
     return $table;
 }*/
+
+/*public function getElementClassJA() {
+    $time = $this->startClock();
+    $time .= $this->getMeridian($time);
+    print_r($time);
+    $wordArr = mb_str_split($time);
+    $rowString = $this->getClockFaceString();
+
+    if (!mb_check_encoding($rowString, "UTF-8")) {
+        $rowString = mb_convert_encoding($rowString, "UTF-8","Shift-JIS, EUC-JP, JIS, SJIS, JIS-ms, eucJP-win, SJIS-win, ISO-2022-JP,       ISO-2022-JP-MS, SJIS-mac, SJIS-Mobile#DOCOMO, SJIS-Mobile#KDDI, SJIS-Mobile#SOFTBANK, UTF-8-Mobile#DOCOMO, UTF-8-Mobile#KDDI-A, UTF-8-Mobile#KDDI-B, UTF-8-Mobile#SOFTBANK, ISO-2022-JP-MOBILE#KDDI");
+    }
+    print_r($rowString);
+    $elementArr = mb_str_split($rowString);
+    print_r($elementArr);
+    return $elementArr;
+}*/

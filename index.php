@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 include_once 'Clock_Object.php';
 $testTimes = [
     '',
@@ -15,17 +16,18 @@ $testTimes = [
     '11:54',
     '23:59',
 ];
-$clock = new Clock_Object(null, Clock_Object::LANG_JA);
+$clock = new Clock_Object(null, Clock_Object::LANG_DE);
 $lang = $clock->lang;
 
 ?>
 <!doctype html>
 <html lang="<?php $lang ?>">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Document</title>
     <link href="css/style.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
