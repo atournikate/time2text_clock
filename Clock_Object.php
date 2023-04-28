@@ -25,10 +25,11 @@ class Clock_Object {
             $this->time = $time;
         }
         $this->lang = $langSelected;
-        $this->time2text  = $this->getTime2TextArray();
+        //$this->time2Text  = $this->getTime2TextArray();
+        $this->time2Text = $this->getJSON2PHP();
     }
 
-    private function getTime2TextArray() {
+    /*private function getTime2TextArray() {
         $time2Text =[
             'en' => [
                 'text' => [
@@ -196,20 +197,20 @@ class Clock_Object {
         ];
         $lang = $this->lang;
         return $time2Text[$lang];
-    }
+    }*/
 
     /**
      * convert json data to array, return array of selected language
      * @return mixed
      */
-/*    private function getJSON2PHP() {
-        //$lang       = $this->lang;
+    private function getJSON2PHP() {
+        $lang       = $this->lang;
         $filePath   = self::ROOT . 'lang.json';
         $file       = file_get_contents($filePath);
         $ret        = json_decode($file, true);
-        print_r($ret); exit;
+
         return $ret[$lang];
-    }*/
+    }
 
     /**
      * test CLI Clock
@@ -438,7 +439,7 @@ class Clock_Object {
         $minutesAdjusted    = $time['minutes_adjusted'];
 
         // get json data
-        $data       = $this->time2text;
+        $data       = $this->time2Text;
 
         // get time strings and numbers
         $text       = $data['text'];
@@ -524,7 +525,7 @@ class Clock_Object {
      */
 
     public function getClockFaceArray() {
-        $data = $this->time2text;
+        $data = $this->time2Text;
         $rows = $data['clockRows'];
         return $rows;
     }
@@ -542,37 +543,78 @@ class Clock_Object {
     }
 
     public function getElementClass() {
-        $lang = $this->lang;
         $time = $this->startClock();
         $wordArr = explode( ' ', $time);
 
         $rowString = $this->getClockFaceString();
-
-        $elementArr = mb_str_split($rowString);
+        $elementArr = str_split($rowString);
+        $keys = array_keys($elementArr);
 
         $num = count($wordArr);
 
         for ($i = 0; $i < $num; $i++) {
+            $lang = $this->lang;
+            $now = $this->getFormattedTime();
+            $minutes = $now['minutes_adjusted'];
+            $hour = $now['hour'];
 
-            preg_match('/(' . $wordArr[$i] . ')/', $rowString, $matches, PREG_OFFSET_CAPTURE);
+            $word = $wordArr[$i];
 
-            print_r($matches);
+            $pattern = $this->getStringPattern($word);
+
+            preg_match($pattern, $rowString, $matches, PREG_OFFSET_CAPTURE);
+
+            $matchWord = $matches[0][0];
+            $matchKey  = $matches[0][1];
 
             $length = strlen($wordArr[$i]);
-            $start = $matches[0][1];
+            $start = $matchKey;
             $end = $start + $length;
-            print_r( "The $wordArr[$i] is $length long, and starts at $start and ends at $end. <br>");
 
             for ($j = $start; $j < $end; $j++) {
                 foreach ($elementArr as $key => $value) {
                     if ($key == $j) {
+                        //print_r("At $key : " . $value);
                         $elementArr[$key] = [$value, 'active'];
                     }
                 }
+               /* foreach ($elementArr as $key => $value) {
+                    if ($key == $j) {
+                        $elementArr[$key] = [$value, 'active'];
+                    }
+                }*/
             }
         }
 
+
         return $elementArr;
+    }
+
+    private function getStringPattern($word) {
+        $lang = $this->lang;
+        $now = $this->getFormattedTime();
+        $minutes = $now['minutes_adjusted'];
+        $hour = $now['hour'];
+
+        switch ($lang) {
+            case self::LANG_DEFAULT:
+                if (($word == preg_match("((five)(?=\sto)|(five)(?=\spast))")) && $minutes == 5) {
+                    $pattern = '(?<=TWENTY)FIVE';
+                } elseif (($word == preg_match('((?<=to\s)five|(?<=past\s)five)')) && $hour == 5) {
+                    $pattern = '((?<!TWENTY)FIVE)';
+                } elseif ($word == 'A') {
+                    $pattern = '((?<=PM)A)';
+                } elseif ($word == 'TEN' && $minutes == 10) {
+                    $pattern = '((?<!TWELVE)TEN)';
+                } elseif ($word == 'TEN' && $hour == 10) {
+                    $pattern = '((?<=TWELVE)TEN)';
+                } else {
+                    $pattern = '(' . $word . ')';
+                }
+                return $pattern;
+            break;
+        }
+
     }
 
 
@@ -581,15 +623,18 @@ class Clock_Object {
      * @return string
      */
     public function buildClock() {
-
         $elementClass = $this->getElementClass();
 
         $table = '<table>';
 
         foreach ($elementClass as $block) {
-
-            $element = $block[0];
-            $class = $block[1];
+            if (is_array($block)) {
+                $element = $block[0];
+                $class = $block[1];
+            } else {
+                $element = $block;
+                $class = '';
+            }
 
             if($i % Clock_Object::COL_NUM == 0) {
                 $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';

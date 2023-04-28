@@ -1,29 +1,29 @@
 {
   "en":  {
     "text": {
-      "FULL":         "it is {HOUR} oclock",
-      "MINUTES_PAST": "it is {MINUTES} past {HOUR}",
-      "HALF_PAST":    "it is half past {HOUR}",
-      "QUARTER_PAST": "it is a quarter past {HOUR}",
-      "QUARTER_TO":   "it is a quarter to {HOUR}",
-      "MINUTES_TO":   "it is {MINUTES} to {HOUR}"
+      "FULL":         "IT IS {HOUR} OCLOCK",
+      "MINUTES_PAST": "IT IS {MINUTES} PAST {HOUR}",
+      "HALF_PAST":    "IT IS HALF PAST {HOUR}",
+      "QUARTER_PAST": "IT IS A QUARTER PAST {HOUR}",
+      "QUARTER_TO":   "IT IS A QUARTER TO {HOUR}",
+      "MINUTES_TO":   "IT IS {MINUTES} TO {HOUR}"
     },
     "numbers": {
-      "0":  "twelve",
-      "1":  "one",
-      "2":  "two",
-      "3":  "three",
-      "4":  "four",
-      "5":  "five",
-      "6":  "six",
-      "7":  "seven",
-      "8":  "eight",
-      "9":  "nine",
-      "10": "ten",
-      "11": "eleven",
-      "12": "twelve",
-      "20": "twenty",
-      "25": "twentyfive"
+      "0":  "TWELVE",
+      "1":  "ONE",
+      "2":  "TWO",
+      "3":  "THREE",
+      "4":  "FOUR",
+      "5":  "FIVE",
+      "6":  "SIX",
+      "7":  "SEVEN",
+      "8":  "EIGHT",
+      "9":  "NINE",
+      "10": "TEN",
+      "11": "ELEVEN",
+      "12": "TWELVE",
+      "20": "TWENTY",
+      "25": "TWENTYFIVE"
     },
     "clockRows": {
       "1":  "ITLISJKAMPM",
@@ -40,30 +40,30 @@
   },
   "de": {
     "text": {
-      "FULL":         "es ist {HOUR} uhr",
-      "MINUTES_PAST": "es ist {MINUTES} nach {HOUR}",
-      "FIVE_TO_HALF": "es ist fünf vor halb {HOUR}",
-      "HALF_PAST":    "es ist halb {HOUR}",
-      "FIVE_PAST_HALF": "es ist fünf nach halb {HOUR}",
-      "QUARTER_PAST": "es ist viertel nach {HOUR}",
-      "QUARTER_TO":   "es ist viertel vor {HOUR}",
-      "MINUTES_TO":   "es ist {MINUTES} vor {HOUR}"
+      "FULL":         "ES IST {HOUR} UHR",
+      "MINUTES_PAST": "ES IST {MINUTES} NACH {HOUR}",
+      "FIVE_TO_HALF": "ES IST FÜNF VOR HALB {HOUR}",
+      "HALF_PAST":    "ES IST HALB {HOUR}",
+      "FIVE_PAST_HALF": "ES IST FÜNF NACH HALB {HOUR}",
+      "QUARTER_PAST": "ES IST VIERTEL NACH {HOUR}",
+      "QUARTER_TO":   "ES IST VIERTEL VOR {HOUR}",
+      "MINUTES_TO":   "ES IST {MINUTES} VOR {HOUR}"
     },
     "numbers": {
-      "0":  "zwölf",
-      "1":  "eins",
-      "2":  "zwei",
-      "3":  "drei",
-      "4":  "vier",
-      "5":  "fünf",
-      "6":  "sechs",
-      "7":  "sieben",
-      "8":  "acht",
-      "9":  "neun",
-      "10": "zehn",
-      "11": "elf",
-      "12": "zwölf",
-      "20": "zwanzig"
+      "0":  "ZWÖLF",
+      "1":  "EINS",
+      "2":  "ZWEI",
+      "3":  "DREI",
+      "4":  "VIER",
+      "5":  "FÜNF",
+      "6":  "SECHS",
+      "7":  "SIEBEN",
+      "8":  "ACHT",
+      "9":  "NEUN",
+      "10": "ZEHN",
+      "11": "ELF",
+      "12": "ZWÖLF",
+      "20": "ZWANZIG"
     },
     "clockRows": {
       "1":  "ESKISTAFÜNF",
@@ -80,12 +80,12 @@
   },
   "tr": {
     "text": {
-      "FULL":          "saat {HOUR}",
-      "MINUTES_PAST":  "saat {HOUR} {MINUTES} geçiyor",
-      "HALF_PAST":     "saat {HOUR} buçukit",
-      "QUARTER_PAST":  "saat {HOUR} çeyrek geçiyor",
-      "QUARTER_TO":    "saat {HOUR} çeyrek var",
-      "MINUTES_TO":    "saat {HOUR} {MINUTES} var"
+      "FULL":          "SAAT {HOUR}",
+      "MINUTES_PAST":  "SAAT {HOUR} {MINUTES} GEÇIYOR",
+      "HALF_PAST":     "SAAT {HOUR} BUÇUKIT",
+      "QUARTER_PAST":  "SAAT {HOUR} ÇEYREK GEÇIYOR",
+      "QUARTER_TO":    "SAAT {HOUR} ÇEYREK VAR",
+      "MINUTES_TO":    "SAAT {HOUR} {MINUTES} VAR"
     },
     "numbers": {
       "1":  "BIR",
