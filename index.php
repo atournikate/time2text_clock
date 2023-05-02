@@ -16,7 +16,7 @@ $testTimes = [
     '11:54',
     '23:59',
 ];
-$clock = new Clock_Object('16:55');
+$clock = new Clock_Object('16:55', Clock_Object::LANG_DE);
 $lang = $clock->lang;
 
 ?>

@@ -29,176 +29,6 @@ class Clock_Object {
         $this->time2Text = $this->getJSON2PHP();
     }
 
-    /*private function getTime2TextArray() {
-        $time2Text =[
-            'en' => [
-                'text' => [
-                    'FULL' => 'IT IS {HOUR} OCLOCK',
-                    'MINUTES_PAST' => 'IT IS {MINUTES} PAST {HOUR}',
-                    'HALF_PAST' => 'IT IS HALF PAST {HOUR}',
-                    'QUARTER_PAST' => 'IT IS A QUARTER PAST {HOUR}',
-                    'QUARTER_TO' => 'IT IS A QUARTER TO {HOUR}',
-                    'MINUTES_TO' => 'IT IS {MINUTES} TO {HOUR}',
-                ],
-                'numbers' => [
-                    '0' => 'TWELVE',
-                    '1' => 'ONE',
-                    '2' => 'TWO',
-                    '3' => 'THREE',
-                    '4' => 'FOUR',
-                    '5' => 'FIVE',
-                    '6' => 'SIX',
-                    '7' => 'SEVEN',
-                    '8' => 'EIGHT',
-                    '9' => 'NINE',
-                    '10' => 'TEN',
-                    '11' => 'ELEVEN',
-                    '12' => 'TWELVE',
-                    '20' => 'TWENTY',
-                    '25' => 'TWENTYFIVE',
-                ],
-                'clockRows' => [
-                    '1' => 'ITLISJKAMPM',
-                    '2' => 'ACQUARTERDC',
-                    '3' => 'TWENTYFIVEX',
-                    '4' => 'HALFSTENFTO',
-                    '5' => 'PASTERUNINE',
-                    '6' => 'ONESIXTHREE',
-                    '7' => 'FOURFIVETWO',
-                    '8' => 'EIGHTELEVEN',
-                    '9' => 'SEVENTWELVE',
-                    '10' => 'TENSEOCLOCK'
-                ]
-            ],
-            'de' => [
-                'text' => [
-                    'FULL' => 'ES IST {HOUR} UHR',
-                    'MINUTES_PAST' => 'ES IST {MINUTES} NACH {HOUR}',
-                    'FIVE_TO_HALF' => 'ES IST FÜNF VOR HALB {HOUR}',
-                    'HALF_PAST' => 'ES IST HALB {HOUR}',
-                    'FIVE_PAST_HALF'    => 'ES IST FÜNF NACH HALB {HOUR}',
-                    'QUARTER_PAST' => 'ES IST VIERTEL NACH {HOUR}',
-                    'QUARTER_TO' => 'ES IST VIERTEL VOR {HOUR}',
-                    'MINUTES_TO' => 'ES IST {MINUTES} VOR {HOUR}',
-                ],
-                'numbers' => [
-                    '0' => 'ZWÖLF',
-                    '1' => 'EINS',
-                    '2' => 'ZWEI',
-                    '3' => 'DREI',
-                    '4' => 'VIER',
-                    '5' => 'FÜNF',
-                    '6' => 'SECHS',
-                    '7' => 'SIEBEN',
-                    '8' => 'ACHT',
-                    '9' => 'NEUN',
-                    '10' => 'ZEHN',
-                    '11' => 'ELF',
-                    '12' => 'ZWÖLF',
-                    '20' => 'ZWANZIG'
-                ],
-                'clockRows' => [
-                    '1' => 'ESKISTAFÜNF',
-                    '2' => 'ZEHNZWANZIG',
-                    '3' => 'DREIVIERTEL',
-                    '4' => 'VORLSNKNACH',
-                    '5' => 'HALBAELFÜNF',
-                    '6' => 'EINSXAMZWEI',
-                    '7' => 'DREIPMJVIER',
-                    '8' => 'SECHSNLACHT',
-                    '9' => 'SIEBENZWÖLF',
-                    '10' => 'ZEHNEUNKUHR'
-                ]
-            ],
-            'tr' => [
-                'text' => [
-                    'FULL' => 'SAAT {HOUR}',
-                    'MINUTES_PAST' => 'SAAT {HOUR} {MINUTES} GEÇIYOR',
-                    'HALF_PAST' => 'SAAT {HOUR} BUÇUKIT',
-                    'QUARTER_PAST' => 'SAAT {HOUR} ÇEYREK GEÇIYOR',
-                    'QUARTER_TO' => 'SAAT {HOUR} ÇEYREK VAR',
-                    'MINUTES_TO' => 'SAAT {HOUR} {MINUTES} VAR',
-                ],
-                'numbers' => [
-                    '0' => 'ON IKI',
-                    '1' => 'BIR',
-                    '2' => 'IKI',
-                    '3' => 'ÜÇ',
-                    '4' => 'DÖRT',
-                    '5' => 'BEŞ',
-                    '6' => 'ALTI',
-                    '7' => 'YEDI',
-                    '8' => 'SEKIZ',
-                    '9' => 'DOKUZ',
-                    '10' => 'ON',
-                    '11' => 'ON BIR',
-                    '12' => 'ON IKI',
-                    '20' => 'YIRMI',
-                    '25' => 'YIRMI BEŞ'
-                ],
-                'clockRows' => [
-                    '1' => 'SAATXSABAHD',
-                    '2' => 'AKŞAMNONJKL',
-                    '3' => 'BIRUIKIYÜÇI',
-                    '4' => 'DÖRTABEŞDIG',
-                    '5' => 'ALTIVYEDIEF',
-                    '6' => 'SEKIZHDOKUZ',
-                    '7' => 'YIRMIPBEŞUD',
-                    '8' => 'ZONYÇEYREKS',
-                    '9' => 'VARMGBUÇUKL',
-                    '10' => 'GEÇIYORCTBO'
-                ]
-            ],
-            'ja' => [
-                'text' => [
-                    'FULL' => '今は{HOUR}時です',
-                    'MINUTES_PAST' => '今は{HOUR}時{MINUTES}分です',
-                    'HALF_PAST' => '今は{HOUR}時半です',
-                    'QUARTER_PAST' => '今は{HOUR}時{MINUTES}分です',
-                    'QUARTER_TO' => '今は{HOUR}時{MINUTES}分です',
-                    'MINUTES_TO' => '今は{HOUR}時{MINUTES}分です',
-                ],
-                'numbers' => [
-                    '0' => 'ON IKI',
-                    '1' => '一',
-                    '2' => '二',
-                    '3' => '三',
-                    '4' => '四',
-                    '5' => '五',
-                    '6' => '六',
-                    '7' => '七',
-                    '8' => '八',
-                    '9' => '九',
-                    '10' => '十',
-                    '11' => '十一',
-                    '12' => '十二',
-                    '15' => '十五',
-                    '20' => '二十',
-                    '25' => '二十五',
-                    '35' => '三十五',
-                    '40' => '四十',
-                    '45' => '四十五',
-                    '50' => '五十',
-                    '55' => '五十五'
-                ],
-                'clockRows' => [
-                    '1' => '今花鳥風月は✿水に流す',
-                    '2' => '十一二三四五六七八九時',
-                    '3' => '一二三四五和陰陽平和十',
-                    '4' => '一二三四五六七八九歌分',
-                    '5' => '✿月に遠くおぼゆる藤の',
-                    '6' => '色香かな✿光陰矢の如し',
-                    '7' => '明日は明日の風が吹く✿',
-                    '8' => '七転び八起き✿因果応報',
-                    '9' => '涙午朝午夜✿急がば回れ',
-                    '10' => '自業自得✿起死回生です'
-                ]
-            ]
-        ];
-        $lang = $this->lang;
-        return $time2Text[$lang];
-    }*/
-
     /**
      * convert json data to array, return array of selected language
      * @return mixed
@@ -543,79 +373,73 @@ class Clock_Object {
     }
 
     public function getElementClass() {
-        $time = $this->startClock();
-        $wordArr = explode( ' ', $time);
+        $text = $this->startClock();
+        $wordArr = explode( ' ', $text);
 
         $rowString = $this->getClockFaceString();
         $elementArr = str_split($rowString);
         $keys = array_keys($elementArr);
-
-        $num = count($wordArr);
-
-        for ($i = 0; $i < $num; $i++) {
-            $lang = $this->lang;
-            $now = $this->getFormattedTime();
-            $minutes = $now['minutes_adjusted'];
-            $hour = $now['hour'];
-
-            $word = $wordArr[$i];
-
-            $pattern = $this->getStringPattern($word);
-
+        $matchArr = [];
+        foreach ($wordArr as $key => $word) {
+            $pattern = $this->getStringPattern($key, $word);
             preg_match($pattern, $rowString, $matches, PREG_OFFSET_CAPTURE);
+            $matchArr[$matches[0][1]] = $matches[0][0];
+        }
 
-            $matchWord = $matches[0][0];
-            $matchKey  = $matches[0][1];
-
-            $length = strlen($wordArr[$i]);
-            $start = $matchKey;
+        foreach ($matchArr as $key => $word) {
+            $start = $key;
+            $length = strlen($word);
             $end = $start + $length;
 
             for ($j = $start; $j < $end; $j++) {
                 foreach ($elementArr as $key => $value) {
                     if ($key == $j) {
-                        //print_r("At $key : " . $value);
                         $elementArr[$key] = [$value, 'active'];
                     }
                 }
-               /* foreach ($elementArr as $key => $value) {
-                    if ($key == $j) {
-                        $elementArr[$key] = [$value, 'active'];
-                    }
-                }*/
             }
-        }
 
+        }
 
         return $elementArr;
     }
 
-    private function getStringPattern($word) {
+    private function getStringPattern($key, $word) {
         $lang = $this->lang;
-        $now = $this->getFormattedTime();
-        $minutes = $now['minutes_adjusted'];
-        $hour = $now['hour'];
 
-        switch ($lang) {
-            case self::LANG_DEFAULT:
-                if (($word == preg_match("((five)(?=\sto)|(five)(?=\spast))")) && $minutes == 5) {
-                    $pattern = '(?<=TWENTY)FIVE';
-                } elseif (($word == preg_match('((?<=to\s)five|(?<=past\s)five)')) && $hour == 5) {
-                    $pattern = '((?<!TWENTY)FIVE)';
-                } elseif ($word == 'A') {
-                    $pattern = '((?<=PM)A)';
-                } elseif ($word == 'TEN' && $minutes == 10) {
-                    $pattern = '((?<!TWELVE)TEN)';
-                } elseif ($word == 'TEN' && $hour == 10) {
-                    $pattern = '((?<=TWELVE)TEN)';
-                } else {
-                    $pattern = '(' . $word . ')';
-                }
-                return $pattern;
-            break;
+        if ($lang == self::LANG_DEFAULT) {
+            $pattern = $this->getEnglishGrammar($key, $word);
+        }
+        return $pattern;
+    }
+
+    private function getEnglishGrammar($key, $word) {
+        $time2Text = $this->time2Text;
+        $five   = $time2Text['numbers'][5];
+        $ten      = $time2Text['numbers'][10];
+
+        if ($word == $five){
+            if ($key <= 2) {
+                $pattern = '((?<=TWENTY)FIVE)';
+            } else {
+                $pattern = '((?<!TWENTY)FIVE)';
+            }
+        } elseif ($word == $ten) {
+            if ($key <= 2) {
+                $pattern = '((?<!TWELVE)TEN)';
+            } else {
+                $pattern = '((?<=TWELVE)TEN)';
+            }
+        }
+        elseif ($word == 'A') {
+            $pattern = '((?<=PM)A)';
+        } else {
+            $pattern = '(' . $word . ')';
         }
 
+        return $pattern;
     }
+
 
 
     /**
