@@ -377,13 +377,16 @@ class Clock_Object {
         $wordArr = explode( ' ', $text);
 
         $rowString = $this->getClockFaceString();
+        //$rowString = htmlentities($rowString, ENT_XML1, "UTF-8");
+
         $elementArr = str_split($rowString);
-        $keys = array_keys($elementArr);
         $matchArr = [];
         foreach ($wordArr as $key => $word) {
             $pattern = $this->getStringPattern($key, $word);
             preg_match($pattern, $rowString, $matches, PREG_OFFSET_CAPTURE);
+            print_r($matches[0][0] . " ");
             $matchArr[$matches[0][1]] = $matches[0][0];
+
         }
 
         foreach ($matchArr as $key => $word) {
@@ -393,6 +396,9 @@ class Clock_Object {
 
             for ($j = $start; $j < $end; $j++) {
                 foreach ($elementArr as $key => $value) {
+
+                    //$value = htmlentities($value, ENT_XHTML);
+                    //$value = html_entity_decode($value, ENT_HTML5, 'UTF-8');
                     if ($key == $j) {
                         $elementArr[$key] = [$value, 'active'];
                     }
@@ -400,6 +406,7 @@ class Clock_Object {
             }
 
         }
+
 
         return $elementArr;
     }
@@ -409,6 +416,8 @@ class Clock_Object {
 
         if ($lang == self::LANG_DEFAULT) {
             $pattern = $this->getEnglishGrammar($key, $word);
+        } elseif ($lang == self::LANG_DE) {
+            $pattern = $this->getGermanGrammar($key, $word);
         }
         return $pattern;
     }
@@ -440,6 +449,30 @@ class Clock_Object {
         return $pattern;
     }
 
+    private function getGermanGrammar($key, $word) {
+        $time2Text = $this->time2Text;
+        $five   = $time2Text['numbers'][5];
+        $ten      = $time2Text['numbers'][10];
+
+        if ($word == $five){
+            if ($key <= 2) {
+                $pattern = '(' . $five .'(?=ZEHN))';
+            } else {
+                $pattern = '(' . $five .'(?!ZEHN))';
+            }
+        } elseif ($word == $ten) {
+            if ($key <= 2) {
+                $pattern = '(' . $ten . '(?=ZWANZIG))';
+            } else {
+                $pattern = '(' . $ten . '(?!ZWANZIG))';
+            }
+        } else {
+            $pattern = '(' . $word . ')';
+        }
+
+        return $pattern;
+
+    }
 
 
     /**
@@ -459,6 +492,13 @@ class Clock_Object {
                 $element = $block;
                 $class = '';
             }
+            print_r($element . " ");
+
+            if ($element == "Ü" || $element =="Ö" || $element =="Ä") {
+                print_r($element);
+            }
+
+            //$element = htmlentities($element, ENT_XHTML, "UTF-8");
 
             if($i % Clock_Object::COL_NUM == 0) {
                 $table .= '<tr><td><div class="block ' . $class . '">' . $element . '</div></td>';
